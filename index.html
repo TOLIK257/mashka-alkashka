@@ -3,275 +3,253 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#fbf6f1" />
 <title>Маша — портфолио</title>
+<meta name="description" content="" id="metaDesc" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #fbf6f1;
-    --text: #2b2420;
-    --muted: #7d716a;
-    --card: #ffffff;
-    --line: rgba(43,36,32,0.09);
-    --accent: #e0583f;
-    --accent2: #f0a35e;
-    --shadow: 0 1px 2px rgba(43,36,32,.04), 0 12px 32px rgba(43,36,32,.07);
-    --serif: "Fraunces", Georgia, "Times New Roman", serif;
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --bg:#fbf6f1; --text:#2b2420; --muted:#7d716a; --card:#fff; --line:rgba(43,36,32,.09);
+    --accent:#e0583f; --accent2:#f0a35e;
+    --shadow:0 1px 2px rgba(43,36,32,.04),0 12px 32px rgba(43,36,32,.07);
+    --serif:"Fraunces",Georgia,serif; --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --head:var(--serif);
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #17120f; --text: #f4ece6; --muted: #a49790; --card: #221b17;
-      --line: rgba(255,255,255,0.09); --accent: #ff7a5c; --accent2: #ffb36b;
-      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.4);
-    }
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
-  body {
-    font-family: var(--sans); background: var(--bg); color: var(--text);
-    line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
-  }
-  ::selection { background: var(--accent); color: #fff; }
+  /* палитры (задаёт админка) */
+  :root[data-palette=ocean]{--bg:#f3f7fb;--accent:#2f6fed;--accent2:#35c2d6}
+  :root[data-palette=forest]{--bg:#f4f7f1;--accent:#2f8f5b;--accent2:#b5c94a}
+  :root[data-palette=violet]{--bg:#f8f5fb;--accent:#8b5cf6;--accent2:#ec6bb0}
+  :root[data-palette=mono]{--bg:#f6f6f4;--accent:#222;--accent2:#888}
+  :root[data-font=sans]{--head:var(--sans)}
+  :root[data-dark]{--bg:#15110f!important;--text:#f4ece6;--muted:#a49790;--card:#221b17;--line:rgba(255,255,255,.1);--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4)}
+  :root[data-dark][data-palette=mono]{--accent:#eee;--accent2:#999}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:var(--sans); background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; min-height:100vh; display:flex; flex-direction:column; transition:background .3s; }
+  main { flex:1; }
+  ::selection { background:var(--accent); color:#fff; }
+  a { color:inherit; }
 
-  /* ---- навигация ---- */
-  .nav {
-    position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 100;
-    width: min(560px, calc(100% - 24px));
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 8px 8px 8px 20px; border-radius: 999px;
-    background: color-mix(in srgb, var(--bg) 75%, transparent);
-    backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px);
-    border: 1px solid var(--line); box-shadow: var(--shadow);
-  }
-  .nav .logo { font-family: var(--serif); font-weight: 600; font-size: 18px; color: var(--text); text-decoration: none; }
-  .nav .links { display: flex; gap: 4px; }
-  .nav .links a {
-    text-decoration: none; color: var(--muted); font-size: 14px; font-weight: 500;
-    padding: 8px 16px; border-radius: 999px; transition: background .2s, color .2s;
-  }
-  .nav .links a:hover { color: var(--text); background: var(--line); }
+  .nav { position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:100; width:min(600px,calc(100% - 24px));
+    display:flex; align-items:center; justify-content:space-between; padding:7px 7px 7px 20px; border-radius:999px;
+    background:color-mix(in srgb,var(--bg) 75%,transparent); backdrop-filter:saturate(180%) blur(18px); -webkit-backdrop-filter:saturate(180%) blur(18px);
+    border:1px solid var(--line); box-shadow:var(--shadow); }
+  .logo { font-family:var(--head); font-weight:600; font-size:18px; text-decoration:none; }
+  .links { display:flex; gap:2px; }
+  .links a { text-decoration:none; color:var(--muted); font-size:14px; font-weight:500; padding:8px 15px; border-radius:999px; transition:all .2s; }
+  .links a:hover { color:var(--text); background:var(--line); }
+  .links a.on { background:var(--accent); color:#fff; }
+  :root[data-palette=mono][data-dark] .links a.on { color:#111; }
 
-  /* ---- hero ---- */
-  .hero { position: relative; max-width: 960px; margin: 0 auto; padding: 170px 24px 90px; text-align: center; }
-  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .45; z-index: -1; pointer-events: none; }
-  .blob.b1 { width: 340px; height: 340px; background: var(--accent2); top: 40px; left: -60px; animation: float 14s ease-in-out infinite; }
-  .blob.b2 { width: 300px; height: 300px; background: var(--accent); top: 120px; right: -40px; opacity: .3; animation: float 18s ease-in-out infinite reverse; }
-  @keyframes float { 50% { transform: translate(30px, 24px) scale(1.08); } }
-  .eyebrow {
-    display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--accent); padding: 6px 14px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-    border-radius: 999px; margin-bottom: 26px;
-  }
-  .hero h1 {
-    font-family: var(--serif); font-weight: 500; letter-spacing: -0.035em; line-height: 1.02;
-    font-size: clamp(48px, 10vw, 108px); margin-bottom: 24px;
-  }
-  .hero h1 .name-accent {
-    font-style: italic;
-    background: linear-gradient(120deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
-    padding-right: .06em;
-  }
-  .hero .sub { font-size: clamp(17px, 2.4vw, 21px); color: var(--muted); max-width: 580px; margin: 0 auto; }
-  .hero .sub:empty { display: none; }
-  .scroll-hint {
-    display: inline-flex; margin-top: 44px; width: 44px; height: 44px; border-radius: 50%;
-    border: 1px solid var(--line); align-items: center; justify-content: center;
-    color: var(--muted); text-decoration: none; font-size: 18px; transition: all .2s;
-    animation: bob 2.4s ease-in-out infinite;
-  }
-  .scroll-hint:hover { color: var(--accent); border-color: var(--accent); }
-  @keyframes bob { 50% { transform: translateY(6px); } }
+  .view { display:none; max-width:960px; margin:0 auto; padding:0 24px; width:100%; }
+  .view.active { display:block; animation:rise .55s cubic-bezier(.2,.8,.2,1); }
+  @keyframes rise { from { opacity:0; transform:translateY(18px); } }
 
-  /* ---- секции ---- */
-  .section { max-width: 960px; margin: 0 auto; padding: 56px 24px; }
-  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; }
-  .section-title { font-family: var(--serif); font-weight: 500; font-size: clamp(30px, 5vw, 44px); letter-spacing: -0.02em; }
-  .section-head::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  /* главная */
+  .hero { position:relative; padding:170px 0 60px; text-align:center; }
+  .blob { position:absolute; border-radius:50%; filter:blur(70px); opacity:.42; z-index:-1; pointer-events:none; }
+  .b1 { width:320px; height:320px; background:var(--accent2); top:50px; left:-70px; animation:float 14s ease-in-out infinite; }
+  .b2 { width:290px; height:290px; background:var(--accent); top:130px; right:-50px; opacity:.28; animation:float 18s ease-in-out infinite reverse; }
+  @keyframes float { 50% { transform:translate(30px,24px) scale(1.08); } }
+  .eyebrow { display:inline-block; font-size:13px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--accent);
+    padding:6px 14px; border:1px solid color-mix(in srgb,var(--accent) 35%,transparent); border-radius:999px; margin-bottom:26px; }
+  .eyebrow:empty { display:none; }
+  h1 { font-family:var(--head); font-weight:500; letter-spacing:-.035em; line-height:1.02; font-size:clamp(46px,10vw,104px); margin-bottom:22px; }
+  h1 .name { font-style:italic; background:linear-gradient(120deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; padding-right:.06em; }
+  .sub { font-size:clamp(17px,2.4vw,21px); color:var(--muted); max-width:580px; margin:0 auto; }
+  .cta { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:34px; }
+  .btn { display:inline-block; padding:13px 26px; border-radius:999px; font-weight:600; font-size:15px; text-decoration:none; border:1px solid var(--line); transition:transform .15s,filter .2s; }
+  .btn:hover { transform:translateY(-2px); }
+  .btn.pri { background:var(--accent); color:#fff; border-color:transparent; box-shadow:0 10px 24px color-mix(in srgb,var(--accent) 35%,transparent); }
+  :root[data-palette=mono][data-dark] .btn.pri { color:#111; }
+  .btn.sec { background:var(--card); }
+  .contacts { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:34px; }
+  .contacts a { display:inline-flex; gap:8px; align-items:center; padding:9px 16px; border-radius:999px; background:var(--card); border:1px solid var(--line); text-decoration:none; font-size:14px; font-weight:500; transition:all .2s; }
+  .contacts a:hover { border-color:var(--accent); color:var(--accent); }
+  .strip { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:50px 0 20px; }
+  .strip a { aspect-ratio:1; border-radius:20px; overflow:hidden; display:block; box-shadow:var(--shadow); }
+  .strip img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s; }
+  .strip a:hover img { transform:scale(1.06); }
 
-  .about-card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 28px;
-    padding: clamp(24px, 5vw, 48px); box-shadow: var(--shadow);
-    font-size: clamp(17px, 2.2vw, 20px); line-height: 1.75; white-space: pre-wrap; position: relative;
-  }
-  .about-card::before {
-    content: "“"; position: absolute; top: -6px; left: 22px; font-family: var(--serif);
-    font-size: 96px; line-height: 1; color: var(--accent); opacity: .35;
-  }
+  /* внутренние страницы */
+  .page { padding:130px 0 60px; }
+  .page-title { font-family:var(--head); font-weight:500; font-size:clamp(36px,7vw,64px); letter-spacing:-.03em; line-height:1.05; margin-bottom:34px; }
+  .about { display:grid; gap:34px; grid-template-columns:1fr; align-items:start; }
+  .about.has-photo { grid-template-columns:minmax(0,300px) 1fr; }
+  .about-photo { width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:28px; box-shadow:var(--shadow); }
+  .about-card { background:var(--card); border:1px solid var(--line); border-radius:28px; padding:clamp(24px,5vw,44px); box-shadow:var(--shadow); font-size:clamp(17px,2.2vw,19px); line-height:1.75; white-space:pre-wrap; }
+  .facts { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+  .fact { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:10px 16px; }
+  .fact small { display:block; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  .fact b { font-weight:600; }
+  @media (max-width:700px){ .about.has-photo{grid-template-columns:1fr} .about-photo{max-width:320px;aspect-ratio:1} }
 
-  /* ---- галерея (masonry, без обрезки) ---- */
-  .gallery { columns: 3 260px; column-gap: 18px; }
-  .gallery-item {
-    break-inside: avoid; margin-bottom: 18px; position: relative; overflow: hidden;
-    border-radius: 20px; background: var(--card); box-shadow: var(--shadow); cursor: zoom-in;
-    transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
-  }
-  .gallery-item img { width: 100%; height: auto; display: block; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
-  .gallery-item:hover { transform: translateY(-4px); }
-  .gallery-item:hover img { transform: scale(1.04); }
-  .gallery-item .cap {
-    position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 18px 14px;
-    background: linear-gradient(transparent, rgba(0,0,0,.62)); color: #fff; font-size: 14px;
-    opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s;
-  }
-  .gallery-item:hover .cap, .gallery-item:focus-visible .cap { opacity: 1; transform: none; }
-  .gallery-item .cap:empty { display: none; }
-  @media (hover: none) { .gallery-item .cap { opacity: 1; transform: none; } }
-  .gallery-item:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-  .empty { text-align: center; color: var(--muted); padding: 70px 0; font-size: 17px; column-span: all; }
+  .gallery { columns:3 250px; column-gap:16px; }
+  .gi { break-inside:avoid; margin-bottom:16px; position:relative; overflow:hidden; border-radius:20px; background:var(--card); box-shadow:var(--shadow); cursor:zoom-in; transition:transform .35s cubic-bezier(.2,.8,.2,1); }
+  .gi img { width:100%; height:auto; display:block; transition:transform .6s; }
+  .gi:hover { transform:translateY(-4px); } .gi:hover img { transform:scale(1.04); }
+  .gi:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+  .cap { position:absolute; inset:auto 0 0 0; padding:40px 16px 13px; background:linear-gradient(transparent,rgba(0,0,0,.62)); color:#fff; font-size:14px; opacity:0; transition:opacity .3s; }
+  .cap:empty { display:none; } .gi:hover .cap { opacity:1; }
+  @media (hover:none){ .cap{opacity:1} }
+  .empty { text-align:center; color:var(--muted); padding:70px 0; }
 
-  footer { text-align: center; padding: 70px 24px 48px; color: var(--muted); font-size: 14px; }
-  footer .heart { color: var(--accent); }
-
-  .fade-in { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
-  .fade-in.visible { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .fade-in { opacity: 1; transform: none; }
-  }
-
-  /* ---- lightbox ---- */
-  .lightbox {
-    position: fixed; inset: 0; z-index: 200; background: rgba(12,9,8,.94);
-    display: none; flex-direction: column; align-items: center; justify-content: center;
-    padding: 56px 16px 24px; gap: 14px;
-  }
-  .lightbox.open { display: flex; animation: fadeIn .25s; }
-  @keyframes fadeIn { from { opacity: 0; } }
-  .lightbox img { max-width: 100%; max-height: calc(100% - 50px); border-radius: 12px; object-fit: contain; }
-  .lightbox .lb-cap { color: #e9dfd8; font-size: 15px; text-align: center; min-height: 22px; }
-  .lb-btn {
-    position: absolute; width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer;
-    background: rgba(255,255,255,.12); color: #fff; font-size: 20px; transition: background .2s;
-  }
-  .lb-btn:hover { background: rgba(255,255,255,.25); }
-  .lb-close { top: 14px; right: 14px; }
-  .lb-prev { left: 14px; top: 50%; } .lb-next { right: 14px; top: 50%; }
+  footer { text-align:center; padding:50px 24px 40px; color:var(--muted); font-size:14px; }
+  .lightbox { position:fixed; inset:0; z-index:200; background:rgba(12,9,8,.94); display:none; flex-direction:column; align-items:center; justify-content:center; padding:56px 16px 24px; gap:14px; }
+  .lightbox.open { display:flex; animation:rise .25s; }
+  .lightbox img { max-width:100%; max-height:calc(100% - 50px); border-radius:12px; object-fit:contain; }
+  .lbcap { color:#e9dfd8; font-size:15px; text-align:center; min-height:22px; }
+  .lb { position:absolute; width:46px; height:46px; border-radius:50%; border:none; cursor:pointer; background:rgba(255,255,255,.12); color:#fff; font-size:20px; }
+  .lb:hover { background:rgba(255,255,255,.25); }
+  #lbX{top:14px;right:14px} #lbP{left:14px;top:50%} #lbN{right:14px;top:50%}
+  @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
 </style>
 </head>
 <body>
-  <nav class="nav">
-    <a href="#" class="logo" id="navLogo">Маша</a>
-    <div class="links">
-      <a href="#about">Обо мне</a>
-      <a href="#gallery">Галерея</a>
-    </div>
-  </nav>
-
-  <header class="hero">
-    <div class="blob b1"></div><div class="blob b2"></div>
-    <div class="eyebrow" id="heroEyebrow">Портфолио</div>
-    <h1 id="heroName">Привет, я <span class="name-accent">Маша</span></h1>
-    <p class="sub" id="heroSub"></p>
-    <a class="scroll-hint" href="#about" aria-label="Вниз">↓</a>
-  </header>
-
-  <section class="section" id="about">
-    <div class="section-head"><h2 class="section-title">Обо мне</h2></div>
-    <div class="about-card fade-in" id="aboutText"></div>
-  </section>
-
-  <section class="section" id="gallery">
-    <div class="section-head"><h2 class="section-title">Галерея</h2></div>
-    <div class="gallery" id="galleryGrid"></div>
-  </section>
-
-  <footer>Сделано с <span class="heart">♥</span> · <span id="footYear"></span></footer>
-
+  <nav class="nav"><a href="#/" class="logo" id="navLogo">Маша</a><div class="links" id="navLinks"></div></nav>
+  <main>
+    <section class="view" id="v-home">
+      <div class="hero">
+        <div class="blob b1"></div><div class="blob b2"></div>
+        <div class="eyebrow" id="eyebrow"></div>
+        <h1 id="heroName"></h1>
+        <p class="sub" id="heroSub"></p>
+        <div class="cta" id="cta"></div>
+        <div class="contacts" id="contacts"></div>
+        <div class="strip" id="strip"></div>
+      </div>
+    </section>
+    <section class="view" id="v-about"><div class="page">
+      <h2 class="page-title" id="aboutTitle"></h2>
+      <div class="about" id="aboutBox"></div>
+    </div></section>
+    <section class="view" id="v-gallery"><div class="page">
+      <h2 class="page-title" id="galTitle"></h2>
+      <div class="gallery" id="galleryGrid"></div>
+    </div></section>
+  </main>
+  <footer id="footer"></footer>
   <div class="lightbox" id="lightbox">
-    <button class="lb-btn lb-close" id="lbClose" aria-label="Закрыть">✕</button>
-    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Назад">‹</button>
-    <img id="lightboxImg" src="" alt="" />
-    <div class="lb-cap" id="lbCap"></div>
-    <button class="lb-btn lb-next" id="lbNext" aria-label="Вперёд">›</button>
+    <button class="lb" id="lbX" aria-label="Закрыть">✕</button>
+    <button class="lb" id="lbP" aria-label="Назад">‹</button>
+    <img id="lbImg" src="" alt="" /><div class="lbcap" id="lbCap"></div>
+    <button class="lb" id="lbN" aria-label="Вперёд">›</button>
   </div>
 
 <script>
 const SUPABASE_URL = "https://xxauwkymufehmoprmhay.supabase.co";
 const CONTENT_URL = SUPABASE_URL + "/storage/v1/object/public/portfolio/content.json";
-let items = [], current = 0;
+const PREVIEW = new URLSearchParams(location.search).has("preview");
+const ICONS = { telegram:"✈️", instagram:"📸", vk:"💬", email:"✉️", phone:"📞", link:"🔗" };
+let D = {}, items = [], cur = 0;
 
-async function loadContent() {
-  try {
-    const r = await fetch(CONTENT_URL + "?t=" + Date.now(), { cache: "no-store" });
-    if (!r.ok) throw new Error("content " + r.status);
-    return await r.json();
-  } catch (e) { return null; }
-}
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+const safeUrl = u => /^(https?:|mailto:|tel:|\.\/|#)/i.test(u || "") ? u : "";
 
-function escapeHtml(s) {
-  return String(s == null ? "" : s)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+function contactHref(c) {
+  const v = (c.value || "").trim(); if (!v) return "";
+  const h = v.replace(/^@/, "");
+  switch (c.type) {
+    case "telegram": return /^https?:/i.test(v) ? v : "https://t.me/" + h;
+    case "instagram": return /^https?:/i.test(v) ? v : "https://instagram.com/" + h;
+    case "vk": return /^https?:/i.test(v) ? v : "https://vk.com/" + h;
+    case "email": return "mailto:" + v;
+    case "phone": return "tel:" + v.replace(/[^\d+]/g, "");
+    default: return safeUrl(/^[\w.-]+\.[a-z]{2,}/i.test(v) && !/^https?:/i.test(v) ? "https://" + v : v);
+  }
 }
 
 function render(data) {
-  const s = data.site || {};
+  D = data || {};
+  const s = D.site || {}, a = D.about || {}, g = D.gallery || [], t = D.theme || {}, sec = D.sections || {};
   const name = s.name || "Маша";
-  document.title = name + " — портфолио";
-  document.getElementById("navLogo").textContent = name;
-  document.getElementById("heroName").innerHTML = 'Привет, я <span class="name-accent">' + escapeHtml(name) + "</span>";
-  document.getElementById("heroSub").textContent = s.subtitle || "";
-  document.getElementById("aboutText").textContent = s.about || "Здесь пока пусто. Добавь текст через админку!";
+  const root = document.documentElement;
+  root.dataset.palette = t.palette || "coral";
+  root.dataset.font = t.font || "serif";
+  const dark = t.mode === "dark" || (t.mode !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+  dark ? root.setAttribute("data-dark", "") : root.removeAttribute("data-dark");
 
-  const g = document.getElementById("galleryGrid");
-  items = data.gallery || [];
-  if (!items.length) {
-    g.innerHTML = '<div class="empty">Фотографий пока нет 🌸</div>';
-    return;
-  }
-  g.innerHTML = items.map((it, i) =>
-    '<div class="gallery-item fade-in" tabindex="0" role="button" data-i="' + i + '">' +
-      '<img src="' + escapeHtml(it.url || "") + '" alt="' + escapeHtml(it.caption || "") + '" loading="lazy" />' +
-      '<div class="cap">' + escapeHtml(it.caption || "") + '</div>' +
-    '</div>'
-  ).join("");
-  g.querySelectorAll(".gallery-item").forEach(el => {
-    const open = () => openLightbox(+el.dataset.i);
-    el.addEventListener("click", open);
-    el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+  document.title = (D.seo && D.seo.title) || (name + " — портфолио");
+  $("metaDesc").content = (D.seo && D.seo.description) || s.subtitle || "";
+  $("navLogo").textContent = name;
+  const showAbout = sec.about !== false, showGal = sec.gallery !== false;
+
+  // навигация
+  const links = [["#/", "Главная"]];
+  if (showAbout) links.push(["#/about", "Обо мне"]);
+  if (showGal) links.push(["#/gallery", "Галерея"]);
+  $("navLinks").innerHTML = links.map(l => '<a href="' + l[0] + '">' + l[1] + "</a>").join("");
+
+  // главная
+  $("eyebrow").textContent = s.eyebrow != null ? s.eyebrow : "Портфолио";
+  const greet = s.greeting != null ? s.greeting : "Привет, я";
+  $("heroName").innerHTML = (greet ? esc(greet) + " " : "") + '<span class="name">' + esc(name) + "</span>";
+  $("heroSub").textContent = s.subtitle || "";
+  $("cta").innerHTML = (showGal ? '<a class="btn pri" href="#/gallery">Смотреть работы</a>' : "") + (showAbout ? '<a class="btn sec" href="#/about">Обо мне</a>' : "");
+  $("contacts").innerHTML = (D.contacts || []).map(c => {
+    const h = contactHref(c); if (!h) return "";
+    return '<a href="' + esc(h) + '" target="_blank" rel="noopener">' + (ICONS[c.type] || "🔗") + " " + esc(c.label || c.value) + "</a>";
+  }).join("");
+  $("strip").innerHTML = showGal ? g.slice(0, 3).map(p => '<a href="#/gallery"><img src="' + esc(p.url) + '" alt="" loading="lazy"></a>').join("") : "";
+
+  // обо мне (v1: site.about)
+  $("aboutTitle").textContent = a.title || "Обо мне";
+  const text = a.text != null ? a.text : s.about;
+  const facts = (a.facts || []).filter(f => f.label || f.value);
+  $("aboutBox").className = "about" + (a.photo ? " has-photo" : "");
+  $("aboutBox").innerHTML = (a.photo ? '<img class="about-photo" src="' + esc(a.photo) + '" alt="">' : "") +
+    "<div><div class=\"about-card\">" + esc(text || "Здесь пока пусто. Добавь текст через админку!") + "</div>" +
+    (facts.length ? '<div class="facts">' + facts.map(f => '<div class="fact"><small>' + esc(f.label) + "</small><b>" + esc(f.value) + "</b></div>").join("") + "</div>" : "") + "</div>";
+
+  // галерея
+  $("galTitle").textContent = D.galleryTitle || "Галерея";
+  items = g;
+  $("galleryGrid").innerHTML = g.length ? g.map((p, i) =>
+    '<div class="gi" tabindex="0" role="button" data-i="' + i + '"><img src="' + esc(p.url) + '" alt="' + esc(p.caption) + '" loading="lazy"><div class="cap">' + esc(p.caption) + "</div></div>").join("")
+    : '<div class="empty">Фотографий пока нет 🌸</div>';
+  document.querySelectorAll(".gi").forEach(el => {
+    const open = () => openLb(+el.dataset.i);
+    el.onclick = open; el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } };
   });
+
+  $("footer").textContent = (s.footer != null ? s.footer : "Сделано с любовью") + " · " + new Date().getFullYear();
+  route();
 }
+
+/* вкладки по адресу #/about, #/gallery */
+function route() {
+  let r = (location.hash.replace(/^#\/?/, "") || "home");
+  const sec = D.sections || {};
+  if (!["home", "about", "gallery"].includes(r) || (r === "about" && sec.about === false) || (r === "gallery" && sec.gallery === false)) r = "home";
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("active", v.id === "v-" + r));
+  document.querySelectorAll("#navLinks a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === (r === "home" ? "#/" : "#/" + r)));
+  window.scrollTo(0, 0);
+}
+addEventListener("hashchange", route);
 
 /* lightbox */
-const lb = document.getElementById("lightbox");
-function showImg() {
-  const it = items[current]; if (!it) return;
-  document.getElementById("lightboxImg").src = it.url || "";
-  document.getElementById("lbCap").textContent = it.caption || "";
-  const multi = items.length > 1;
-  document.getElementById("lbPrev").style.display = multi ? "" : "none";
-  document.getElementById("lbNext").style.display = multi ? "" : "none";
+const lb = $("lightbox");
+function showLb() { const p = items[cur]; if (!p) return; $("lbImg").src = p.url; $("lbCap").textContent = p.caption || "";
+  $("lbP").style.display = $("lbN").style.display = items.length > 1 ? "" : "none"; }
+function openLb(i) { cur = i; showLb(); lb.classList.add("open"); document.body.style.overflow = "hidden"; }
+function closeLb() { lb.classList.remove("open"); document.body.style.overflow = ""; }
+const step = d => { cur = (cur + d + items.length) % items.length; showLb(); };
+$("lbX").onclick = closeLb; $("lbP").onclick = e => { e.stopPropagation(); step(-1); }; $("lbN").onclick = e => { e.stopPropagation(); step(1); };
+lb.onclick = e => { if (e.target === lb) closeLb(); };
+addEventListener("keydown", e => { if (!lb.classList.contains("open")) return; if (e.key === "Escape") closeLb(); if (e.key === "ArrowLeft") step(-1); if (e.key === "ArrowRight") step(1); });
+
+/* загрузка / предпросмотр из админки */
+if (PREVIEW) {
+  addEventListener("message", e => { if (e.data && e.data.type === "preview") render(e.data.data); });
+  parent.postMessage({ type: "preview-ready" }, "*");
+} else {
+  fetch(CONTENT_URL + "?t=" + Date.now(), { cache: "no-store" })
+    .then(r => { if (!r.ok) throw 0; return r.json(); })
+    .then(render)
+    .catch(() => { render({}); $("galleryGrid").innerHTML = '<div class="empty">Не удалось загрузить контент.</div>'; });
 }
-function openLightbox(i) { current = i; showImg(); lb.classList.add("open"); document.body.style.overflow = "hidden"; }
-function closeLightbox() { lb.classList.remove("open"); document.body.style.overflow = ""; }
-function step(d) { current = (current + d + items.length) % items.length; showImg(); }
-document.getElementById("lbClose").addEventListener("click", closeLightbox);
-document.getElementById("lbPrev").addEventListener("click", e => { e.stopPropagation(); step(-1); });
-document.getElementById("lbNext").addEventListener("click", e => { e.stopPropagation(); step(1); });
-lb.addEventListener("click", e => { if (e.target === lb) closeLightbox(); });
-document.addEventListener("keydown", e => {
-  if (!lb.classList.contains("open")) return;
-  if (e.key === "Escape") closeLightbox();
-  if (e.key === "ArrowLeft") step(-1);
-  if (e.key === "ArrowRight") step(1);
-});
-
-/* scroll reveal */
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
-}, { threshold: 0.08 });
-function observeFades() { document.querySelectorAll(".fade-in").forEach(el => io.observe(el)); }
-
-document.getElementById("footYear").textContent = new Date().getFullYear();
-
-loadContent().then(data => {
-  if (data) { render(data); observeFades(); }
-  else { document.getElementById("aboutText").textContent = "Не удалось загрузить контент."; observeFades(); }
-});
 </script>
 </body>
 </html>
