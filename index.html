@@ -377,8 +377,13 @@ lb.onclick=e=>{if(e.target===lb)closeLb();};
 addEventListener("keydown",e=>{if(!lb.classList.contains("on"))return;if(e.key==="Escape")closeLb();if(e.key==="ArrowLeft")stepLb(-1);if(e.key==="ArrowRight")stepLb(1);});
 
 if(PREVIEW){
-  addEventListener("message",e=>{if(e.data&&e.data.type==="preview")render(e.data.data);});
-  parent.postMessage({type:"preview-ready"},"*");
+  const announce=()=>parent.postMessage({type:"preview-ready"},"*");
+  announce();
+  let n=0;
+  const t=setInterval(()=>{announce();if(++n>40)clearInterval(t);},500);
+  addEventListener("message",e=>{
+    if(e.data&&e.data.type==="preview"){clearInterval(t);render(e.data.data);}
+  });
 }else{
   fetch(CONTENT_URL+"?t="+Date.now(),{cache:"no-store"})
     .then(r=>{if(!r.ok)throw 0;return r.json();})
