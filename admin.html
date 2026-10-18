@@ -272,6 +272,10 @@ button,input,select,textarea{font-family:var(--sans)}
   .tba .btn{padding:8px 12px;font-size:12.5px}
   .edcol{padding:16px 14px 130px}
   .lcard{padding:34px 22px 28px}
+  .card{padding:18px 16px}
+  .ch h2{font-size:19px}
+  .sbi{gap:8px}
+  #saveBtn{flex:1;padding:13px 16px;font-size:15px}
 }
 </style>
 </head>
@@ -558,6 +562,7 @@ async function openEditor(){
   $("loginView").style.display="none";$("editorView").style.display="block";
   try{C=normalize(await fetchC());}catch(e){C=normalize({});}
   syncAll();markClean();
+  sendPreview();
 }
 
 /* PREVIEW */
