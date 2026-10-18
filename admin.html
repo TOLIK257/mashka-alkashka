@@ -3,106 +3,142 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
 <title>Админка — Маша</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #f5f5f7; --text: #1d1d1f; --muted: #6e6e73; --card: #ffffff;
-    --accent: #0071e3; --accent2: #5e5ce6; --border: rgba(0,0,0,0.08);
-    --ok: #28a745; --danger: #ff3b30;
+    --bg: #fbf6f1; --text: #2b2420; --muted: #7d716a; --card: #ffffff; --field: #f6efe9;
+    --line: rgba(43,36,32,0.1); --accent: #e0583f; --accent-soft: rgba(224,88,63,.1);
+    --ok: #2f9e62; --danger: #d93a2b;
+    --shadow: 0 1px 2px rgba(43,36,32,.04), 0 10px 28px rgba(43,36,32,.06);
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17120f; --text: #f4ece6; --muted: #a49790; --card: #221b17; --field: #2b231e;
+      --line: rgba(255,255,255,0.1); --accent: #ff7a5c; --accent-soft: rgba(255,122,92,.14);
+      --ok: #4cc785; --danger: #ff6b5c; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.35);
+    }
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-    background: var(--bg); color: var(--text); line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
-  /* ---------- экран входа ---------- */
-  .login { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-  .login-card {
-    background: var(--card); border-radius: 20px; padding: 40px 36px; width: 100%;
-    max-width: 400px; box-shadow: 0 8px 40px rgba(0,0,0,0.08); text-align: center;
-  }
-  .login-card h1 { font-size: 26px; letter-spacing: -0.02em; margin-bottom: 6px; }
-  .login-card .sub { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
-  .field { text-align: left; margin-bottom: 16px; }
-  .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-  .field input, .field textarea {
-    width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
-    font-size: 15px; font-family: inherit; background: var(--bg); color: var(--text); outline: none;
-    transition: border .2s, box-shadow .2s;
-  }
-  .field input:focus, .field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,113,227,0.15); }
-  .field textarea { resize: vertical; min-height: 120px; }
+  /* ---- кнопки и поля ---- */
   .btn {
-    display: inline-block; width: 100%; padding: 13px; border-radius: 12px; border: none;
-    background: var(--accent); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer;
-    transition: opacity .2s, transform .1s;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    padding: 14px 20px; border-radius: 14px; border: 1px solid transparent; cursor: pointer;
+    background: var(--accent); color: #fff; font: 600 16px var(--sans); text-decoration: none;
+    transition: filter .2s, transform .1s, background .2s; 
   }
-  .btn:hover { opacity: 0.9; }
-  .btn:active { transform: scale(0.99); }
-  .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
-  .btn.danger { background: var(--danger); }
-  .msg { font-size: 13px; margin-top: 14px; min-height: 18px; }
-  .msg.err { color: var(--danger); }
-  .msg.ok { color: var(--ok); }
+  .btn:hover { filter: brightness(1.07); }
+  .btn:active { transform: scale(.98); }
+  .btn:disabled { opacity: .6; cursor: default; }
+  .btn.ghost { background: transparent; color: var(--text); border-color: var(--line); }
+  .btn.ghost:hover { background: var(--field); filter: none; }
+  .btn.saved { background: var(--ok); }
+  .field { text-align: left; margin-bottom: 18px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 7px; }
+  .field input, .field textarea {
+    width: 100%; padding: 13px 16px; border-radius: 12px; border: 1px solid var(--line);
+    font: 16px var(--sans); background: var(--field); color: var(--text); outline: none;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); background: var(--card); }
+  .field textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+  .msg { font-size: 14px; margin-top: 14px; min-height: 20px; }
+  .msg.err { color: var(--danger); } .msg.ok { color: var(--ok); }
 
-  /* ---------- экран редактора ---------- */
+  /* ---- вход ---- */
+  .login {
+    min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 20px;
+    background: radial-gradient(600px 400px at 15% 10%, rgba(240,163,94,.28), transparent 70%),
+                radial-gradient(500px 400px at 90% 90%, rgba(224,88,63,.2), transparent 70%), var(--bg);
+  }
+  .login-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 44px 36px 36px;
+    width: 100%; max-width: 410px; box-shadow: var(--shadow), 0 30px 60px rgba(43,36,32,.08); text-align: center;
+  }
+  .lock {
+    width: 60px; height: 60px; margin: 0 auto 22px; border-radius: 20px; display: grid; place-items: center;
+    font-size: 26px; background: linear-gradient(135deg, #f0a35e, #e0583f); box-shadow: 0 10px 24px rgba(224,88,63,.35);
+  }
+  .login-card h1 { font-family: var(--serif); font-weight: 500; font-size: 32px; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .login-card .sub { color: var(--muted); font-size: 15px; margin-bottom: 28px; }
+
+  /* ---- шапка редактора ---- */
   .topbar {
-    position: sticky; top: 0; z-index: 10;
-    backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
-    background: rgba(245,245,247,0.8); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border-bottom: 1px solid var(--line);
   }
-  .topbar-inner {
-    max-width: 720px; margin: 0 auto; padding: 0 22px; height: 56px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .topbar .brand { font-weight: 600; font-size: 15px; }
-  .topbar .actions { display: flex; gap: 10px; }
-  .topbar .btn { width: auto; padding: 8px 16px; font-size: 14px; }
+  .topbar-inner { max-width: 760px; margin: 0 auto; padding: 0 20px; height: 62px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: var(--serif); font-weight: 600; font-size: 20px; display: flex; align-items: center; gap: 10px; }
+  .brand small { font: 500 12px var(--sans); color: var(--muted); background: var(--field); padding: 3px 10px; border-radius: 999px; }
+  .topbar .actions { display: flex; gap: 8px; }
+  .topbar .btn { width: auto; padding: 9px 16px; font-size: 14px; border-radius: 999px; }
 
-  .editor { padding: 32px 0 80px; }
-  .card {
-    background: var(--card); border-radius: 18px; padding: 26px; margin-bottom: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  }
-  .card h2 { font-size: 20px; letter-spacing: -0.02em; margin-bottom: 18px; }
-  .hint { color: var(--muted); font-size: 13px; margin-top: -10px; margin-bottom: 14px; }
+  .editor { padding: 28px 20px 140px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow); }
+  .card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .card-icon { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; font-size: 20px; background: var(--accent-soft); flex-shrink: 0; }
+  .card h2 { font-family: var(--serif); font-weight: 500; font-size: 24px; letter-spacing: -0.015em; line-height: 1.2; }
+  .hint { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .count { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 999px; }
 
-  /* галерея */
-  .gal-list { display: flex; flex-direction: column; gap: 12px; }
-  .gal-row {
-    display: flex; align-items: center; gap: 14px; padding: 10px; border-radius: 12px;
-    border: 1px solid var(--border); background: var(--bg);
+  /* ---- галерея ---- */
+  .gal-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+  .gal-row { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--field); display: flex; flex-direction: column; }
+  .thumb { position: relative; aspect-ratio: 4/3; background: var(--line); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb .tools { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; }
+  .tool {
+    width: 32px; height: 32px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px;
+    background: rgba(20,14,10,.62); color: #fff; backdrop-filter: blur(6px); transition: background .2s;
   }
-  .gal-row img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
-  .gal-row .cap-input { flex: 1; }
-  .gal-row .cap-input input { width: 100%; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; font-family: inherit; background: var(--card); color: var(--text); outline: none; }
-  .gal-row .del { background: transparent; border: none; color: var(--danger); font-size: 14px; cursor: pointer; padding: 6px 8px; }
-  .add-photo { margin-top: 14px; }
+  .tool:hover { background: rgba(20,14,10,.85); } .tool.del:hover { background: var(--danger); }
+  .tool:disabled { opacity: .35; cursor: default; }
+  .thumb .num { position: absolute; top: 8px; left: 8px; font-size: 12px; font-weight: 600; color: #fff; background: rgba(20,14,10,.62); padding: 3px 9px; border-radius: 999px; }
+  .cap-input { padding: 10px; }
+  .cap-input input { width: 100%; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); font: 14px var(--sans); background: var(--card); color: var(--text); outline: none; }
+  .cap-input input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .gal-empty { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: 15px; padding: 26px 0 10px; }
+
   .drop {
-    border: 2px dashed var(--border); border-radius: 14px; padding: 24px; text-align: center;
-    color: var(--muted); font-size: 14px; cursor: pointer; transition: border .2s, background .2s;
+    margin-top: 16px; border: 2px dashed var(--line); border-radius: 18px; padding: 30px 20px; text-align: center;
+    color: var(--muted); font-size: 15px; cursor: pointer; transition: all .2s;
   }
-  .drop:hover, .drop.over { border-color: var(--accent); background: rgba(0,113,227,0.04); }
+  .drop b { display: block; color: var(--text); font-size: 16px; margin-bottom: 2px; }
+  .drop .plus { display: grid; place-items: center; width: 44px; height: 44px; margin: 0 auto 10px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 24px; }
+  .drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
   .drop input { display: none; }
-  .up-progress { font-size: 13px; color: var(--accent); margin-top: 8px; display: none; }
+  .up-progress { font-size: 14px; color: var(--accent); margin-top: 12px; display: none; text-align: center; }
 
-  .savebar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; }
+  /* ---- панель сохранения ---- */
+  .savebar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; pointer-events: none; }
   .savebar-inner {
-    max-width: 720px; margin: 0 auto; padding: 14px 22px calc(14px + env(safe-area-inset-bottom));
-    display: flex; gap: 12px;
+    pointer-events: auto; max-width: 760px; margin: 0 auto 14px; padding: 10px;
+    width: calc(100% - 28px); border-radius: 22px; background: color-mix(in srgb, var(--card) 85%, transparent);
+    backdrop-filter: saturate(180%) blur(18px); -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border: 1px solid var(--line); box-shadow: 0 12px 40px rgba(43,36,32,.18);
+    margin-bottom: calc(14px + env(safe-area-inset-bottom));
   }
+  .toast {
+    position: fixed; left: 50%; bottom: 100px; transform: translate(-50%, 20px); z-index: 30; opacity: 0; pointer-events: none;
+    background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 14px; font-size: 14px; font-weight: 500;
+    max-width: calc(100% - 40px); transition: opacity .25s, transform .25s;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .toast.err { background: var(--danger); color: #fff; }
 
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #000; --text: #f5f5f7; --muted: #a1a1a6; --card: #1c1c1e; --border: rgba(255,255,255,0.12); }
-    .topbar { background: rgba(0,0,0,0.72); }
-    .gal-row { background: #151516; }
-    .gal-row .cap-input input { background: #2c2c2e; }
-    .field input, .field textarea { background: #151516; }
-    .card { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-    .login-card { box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+  @media (max-width: 480px) {
+    .card { padding: 22px 18px; border-radius: 20px; } .login-card { padding: 36px 24px 28px; }
+    .brand small { display: none; } .gal-list { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   }
 </style>
 </head>
@@ -111,14 +147,15 @@
   <!-- ===== Экран входа ===== -->
   <div class="login" id="loginView" style="display:flex;">
     <div class="login-card">
+      <div class="lock">🔐</div>
       <h1 id="loginTitle">Вход</h1>
       <p class="sub" id="loginSub">Введи пароль, чтобы управлять сайтом</p>
       <div class="field">
-        <label>Пароль</label>
+        <label for="pw">Пароль</label>
         <input type="password" id="pw" placeholder="••••••••" autocomplete="current-password" />
       </div>
       <div class="field" id="pw2wrap" style="display:none;">
-        <label>Повтори пароль</label>
+        <label for="pw2">Повтори пароль</label>
         <input type="password" id="pw2" placeholder="••••••••" autocomplete="new-password" />
       </div>
       <button class="btn" id="loginBtn">Продолжить</button>
@@ -130,9 +167,9 @@
   <div id="editorView" style="display:none;">
     <div class="topbar">
       <div class="topbar-inner">
-        <span class="brand">Админка · Маша</span>
+        <span class="brand">Маша <small>админка</small></span>
         <div class="actions">
-          <a class="btn ghost" href="./" target="_blank">Открыть сайт</a>
+          <a class="btn ghost" href="./" target="_blank">Открыть сайт ↗</a>
           <button class="btn ghost" id="logoutBtn">Выйти</button>
         </div>
       </div>
@@ -140,23 +177,29 @@
 
     <div class="editor wrap">
       <div class="card">
-        <h2>Текст</h2>
-        <div class="field"><label>Имя</label><input type="text" id="fName" /></div>
-        <div class="field"><label>Подзаголовок</label><input type="text" id="fSubtitle" /></div>
-        <div class="field"><label>Обо мне</label><textarea id="fAbout"></textarea></div>
+        <div class="card-head">
+          <div class="card-icon">✍️</div>
+          <div><h2>Текст</h2><p class="hint">Имя, подзаголовок и рассказ о себе</p></div>
+        </div>
+        <div class="field"><label for="fName">Имя</label><input type="text" id="fName" /></div>
+        <div class="field"><label for="fSubtitle">Подзаголовок</label><input type="text" id="fSubtitle" placeholder="Коротко: чем занимаешься" /></div>
+        <div class="field" style="margin-bottom:0"><label for="fAbout">Обо мне</label><textarea id="fAbout"></textarea></div>
       </div>
 
       <div class="card">
-        <h2>Галерея</h2>
-        <p class="hint">Перетащи фото сюда или нажми. Картинки сохраняются сразу после выбора.</p>
-        <div class="gal-list" id="galList"></div>
-        <div class="add-photo">
-          <div class="drop" id="drop">
-            <div>+ Добавить фото</div>
-            <input type="file" id="fileInput" accept="image/*" multiple />
-          </div>
-          <div class="up-progress" id="upProgress"></div>
+        <div class="card-head">
+          <div class="card-icon">🖼️</div>
+          <div><h2>Галерея</h2><p class="hint">Фото загружаются сразу. Порядок и подписи — сохрани кнопкой внизу</p></div>
+          <span class="count" id="galCount">0</span>
         </div>
+        <div class="gal-list" id="galList"></div>
+        <div class="drop" id="drop">
+          <div class="plus">+</div>
+          <b>Добавить фото</b>
+          Перетащи сюда или нажми, чтобы выбрать
+          <input type="file" id="fileInput" accept="image/*" multiple />
+        </div>
+        <div class="up-progress" id="upProgress"></div>
       </div>
     </div>
 
@@ -165,6 +208,7 @@
         <button class="btn" id="saveBtn">Сохранить изменения</button>
       </div>
     </div>
+    <div class="toast" id="toast"></div>
   </div>
 
 <script src="./supabase.js"></script>
@@ -292,27 +336,43 @@ async function openEditor() {
 
 function renderGallery() {
   const list = $("galList");
+  $("galCount").textContent = photos.length;
   if (!photos.length) {
-    list.innerHTML = '<div style="color:var(--muted);font-size:14px;padding:6px 2px;">Фотографий пока нет — добавь первую!</div>';
+    list.innerHTML = '<div class="gal-empty">Фотографий пока нет — добавь первую!</div>';
     return;
   }
   list.innerHTML = photos.map((p, i) =>
     '<div class="gal-row">' +
-      '<img src="' + esc(p.url) + '" alt="" />' +
+      '<div class="thumb"><img src="' + esc(p.url) + '" alt="" />' +
+        '<span class="num">' + (i + 1) + '</span>' +
+        '<div class="tools">' +
+          '<button class="tool up" data-i="' + i + '" title="Раньше"' + (i === 0 ? ' disabled' : '') + '>←</button>' +
+          '<button class="tool dn" data-i="' + i + '" title="Позже"' + (i === photos.length - 1 ? ' disabled' : '') + '>→</button>' +
+          '<button class="tool del" data-i="' + i + '" title="Удалить">✕</button>' +
+        '</div></div>' +
       '<div class="cap-input"><input type="text" value="' + esc(p.caption) + '" placeholder="Подпись (необязательно)" data-i="' + i + '" /></div>' +
-      '<button class="del" data-i="' + i + '" title="Удалить">✕</button>' +
     '</div>'
   ).join("");
 
   list.querySelectorAll(".cap-input input").forEach(inp => {
-    inp.addEventListener("change", () => { photos[+inp.dataset.i].caption = inp.value; });
+    inp.addEventListener("input", () => { photos[+inp.dataset.i].caption = inp.value; });
   });
+  const move = (i, d) => { const j = i + d; if (j < 0 || j >= photos.length) return; [photos[i], photos[j]] = [photos[j], photos[i]]; renderGallery(); };
+  list.querySelectorAll(".up").forEach(b => b.addEventListener("click", () => move(+b.dataset.i, -1)));
+  list.querySelectorAll(".dn").forEach(b => b.addEventListener("click", () => move(+b.dataset.i, 1)));
   list.querySelectorAll(".del").forEach(btn => {
     btn.addEventListener("click", () => {
+      if (!confirm("Убрать это фото из галереи?")) return;
       photos.splice(+btn.dataset.i, 1);
       renderGallery();
     });
   });
+}
+
+let toastTimer;
+function toast(text, isErr) {
+  const t = $("toast"); t.textContent = text; t.className = "toast show" + (isErr ? " err" : "");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
 }
 
 function esc(s) {
@@ -345,7 +405,7 @@ async function uploadFiles(files) {
     const ext = (f.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
     const path = "photos/" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
     const { error } = await supabase.storage.from(BUCKET).upload(path, f, { upsert: false });
-    if (error) { $("upProgress").textContent = "Ошибка загрузки: " + error.message; continue; }
+    if (error) { $("upProgress").textContent = "Ошибка загрузки: " + error.message; toast("Ошибка загрузки: " + error.message, true); continue; }
     photos.push({ url: SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + path, caption: "" });
     renderGallery();
   }
@@ -372,11 +432,11 @@ async function doSave() {
     );
     if (error) throw error;
     editing = payload;
-    btn.textContent = "✓ Сохранено!";
-    setTimeout(() => { btn.textContent = "Сохранить изменения"; }, 1600);
+    btn.textContent = "✓ Сохранено!"; btn.classList.add("saved"); toast("Изменения сохранены ✓");
+    setTimeout(() => { btn.textContent = "Сохранить изменения"; btn.classList.remove("saved"); }, 1800);
   } catch (e) {
     btn.textContent = "Ошибка — попробуй ещё раз";
-    alert("Не удалось сохранить: " + (e.message || e));
+    toast("Не удалось сохранить: " + (e.message || e), true);
   } finally {
     btn.disabled = false;
   }
