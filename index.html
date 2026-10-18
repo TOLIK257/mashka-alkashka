@@ -48,9 +48,10 @@ button{font-family:var(--sans)}
   border:1px solid var(--line);box-shadow:var(--sh);
 }
 .nav-logo{font-family:var(--serif);font-weight:700;font-size:17px;letter-spacing:-.02em;white-space:nowrap}
-.nav-links{display:flex;gap:2px;overflow:hidden}
+.nav-links{display:flex;gap:2px;overflow-x:auto;min-width:0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nav-links::-webkit-scrollbar{display:none}
 .nav-links a{
-  font-size:13.5px;font-weight:500;color:var(--muted);
+  font-size:13.5px;font-weight:500;color:var(--muted);flex-shrink:0;
   padding:7px 14px;border-radius:999px;transition:all .2s;white-space:nowrap;
 }
 .nav-links a:hover{color:var(--text);background:var(--line)}
@@ -64,12 +65,15 @@ button{font-family:var(--sans)}
 @media (prefers-reduced-motion:reduce){.view.on{animation:none}}
 
 /* ── hero ────────────────────────────────────────────────────── */
-.hero{position:relative;padding:152px 0 56px;text-align:center;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
-.bl1{width:360px;height:360px;background:var(--a2);top:30px;left:-80px;opacity:.38;animation:drift 15s ease-in-out infinite}
-.bl2{width:300px;height:300px;background:var(--a1);top:140px;right:-60px;opacity:.25;animation:drift 20s ease-in-out infinite reverse}
-@keyframes drift{50%{transform:translate(28px,20px) scale(1.07)}}
-.hero>*:not(.blob){position:relative;z-index:1}
+/* global background — full screen, on every page */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg .blob{position:absolute;border-radius:50%;filter:blur(90px)}
+.bg .b1{width:60vmax;height:60vmax;background:var(--a2);opacity:.30;top:-18vmax;left:-18vmax;animation:drift 24s ease-in-out infinite}
+.bg .b2{width:48vmax;height:48vmax;background:var(--a1);opacity:.22;top:22vmax;right:-18vmax;animation:drift 30s ease-in-out infinite reverse}
+.bg .b3{width:40vmax;height:40vmax;background:var(--a2);opacity:.16;bottom:-14vmax;left:20vmax;animation:drift 34s ease-in-out infinite}
+@keyframes drift{50%{transform:translate(30px,22px) scale(1.06)}}
+.hero{position:relative;padding:152px 0 56px;text-align:center}
+main,footer{position:relative;z-index:1}
 .eyebrow-pill{
   display:inline-block;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   color:var(--a1);padding:5px 14px;border:1px solid color-mix(in srgb,var(--a1) 30%,transparent);
@@ -208,9 +212,19 @@ button{font-family:var(--sans)}
 
 footer{text-align:center;padding:48px 22px 40px;color:var(--muted);font-size:13px;
   border-top:1px solid var(--line);margin-top:10px}
+
+/* ── mobile / responsive ─────────────────────────────────────── */
+@media(max-width:600px){
+  .hero{padding:118px 0 44px}
+  .page{padding:104px 0 48px}
+  .nav-links a{padding:7px 12px}
+}
 </style>
 </head>
 <body>
+<div class="bg" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+</div>
 <nav class="nav">
   <a class="nav-logo" href="#/" id="navLogo">Маша</a>
   <div class="nav-links" id="navLinks"></div>
@@ -219,7 +233,6 @@ footer{text-align:center;padding:48px 22px 40px;color:var(--muted);font-size:13p
 <main>
   <section class="view" id="v-home">
     <div class="hero">
-      <div class="blob bl1"></div><div class="blob bl2"></div>
       <div class="eyebrow-pill" id="eyebrow"></div>
       <h1 class="hero-name" id="heroName"></h1>
       <p class="hero-sub" id="heroSub"></p>
