@@ -167,7 +167,7 @@
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase.js"></script>
 <script>
 const SUPABASE_URL = "https://xxauwkymufehmoprmhay.supabase.co";
 const SUPABASE_PUB = "sb_publishable_ABzZaqdreTP8pe6L3fMFRA_kYo6J81W";
@@ -176,6 +176,17 @@ const BUCKET = "portfolio";
 const CONTENT_PATH = "content.json";
 const CONTENT_URL = SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + CONTENT_PATH;
 
+if (!window.supabase || !window.supabase.createClient) {
+  document.addEventListener("DOMContentLoaded", () => {
+    const lv = document.getElementById("loginView");
+    lv.style.display = "flex";
+    document.getElementById("loginTitle").textContent = "Ошибка загрузки";
+    document.getElementById("loginSub").textContent = "Не удалось загрузить библиотеку. Проверь интернет и обнови страницу.";
+    document.getElementById("loginBtn").style.display = "none";
+    document.getElementById("pw").parentElement.style.display = "none";
+  });
+  throw new Error("supabase library not loaded");
+}
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUB);
 
 let editing = null;   // загруженный content.json
@@ -236,7 +247,7 @@ async function doSignup() {
   if (pw !== pw2) { msg($("loginMsg"), "Пароли не совпадают", "err"); return; }
   const { data, error } = await supabase.auth.signUp({ email: ADMIN_EMAIL, password: pw });
   if (error) { msg($("loginMsg"), error.message, "err"); return; }
-  // email-подтверждение отключено, сессия приходит сразу/
+  // email-подтверждение отключено, сессия приходит сразу
   if (!data.session) { msg($("loginMsg"), "Не удалось создать аккаунт. Обнови страницу и попробуй снова.", "err"); return; }
   session = data.session;
   await openEditor();
