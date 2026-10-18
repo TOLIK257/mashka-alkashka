@@ -140,318 +140,449 @@
     .card { padding: 22px 18px; border-radius: 20px; } .login-card { padding: 36px 24px 28px; }
     .brand small { display: none; } .gal-list { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   }
+
+  .topbar-inner,.shell{max-width:1360px}
+  .shell{margin:0 auto;padding:22px 20px 130px;display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
+  @media(min-width:1100px){.shell{grid-template-columns:minmax(0,1fr) 440px}}
+  .edcol{min-width:0}
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 14px;scrollbar-width:none;position:sticky;top:62px;z-index:5;background:var(--bg)}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex-shrink:0;border:1px solid var(--line);background:var(--card);color:var(--muted);font:500 14px var(--sans);padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s}
+  .tab:hover{color:var(--text)} .tab.on{background:var(--accent);border-color:transparent;color:#fff}
+  .pane{display:none} .pane.on{display:block;animation:rise .35s}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}}
+  .card{padding:26px;margin-bottom:18px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px} @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  .field .help{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .field select{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);font:16px var(--sans);background:var(--field);color:var(--text)}
+  .switch{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+  .switch:first-of-type{border-top:0;padding-top:0}
+  .switch b{display:block;font-weight:600}.switch span{font-size:13px;color:var(--muted)}
+  .switch input{appearance:none;width:48px;height:28px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
+  .switch input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+  .switch input:checked{background:var(--accent)} .switch input:checked::after{transform:translateX(20px)}
+  .swatches{display:flex;gap:12px;flex-wrap:wrap}
+  .sw{width:54px;height:54px;border-radius:50%;border:3px solid var(--card);cursor:pointer;box-shadow:0 0 0 1px var(--line);transition:transform .15s}
+  .sw:hover{transform:scale(1.08)} .sw.on{box-shadow:0 0 0 3px var(--accent)}
+  .seg{display:inline-flex;background:var(--field);border-radius:12px;padding:4px;gap:4px;flex-wrap:wrap}
+  .seg button{border:none;background:transparent;color:var(--muted);font:500 14px var(--sans);padding:9px 16px;border-radius:9px;cursor:pointer}
+  .seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .lbl{font-size:13px;font-weight:500;color:var(--muted);margin:18px 0 8px}.lbl:first-child{margin-top:0}
+  .list-row{display:grid;grid-template-columns:140px 1fr 1fr 40px;gap:8px;margin-bottom:10px}
+  .list-row.f{grid-template-columns:1fr 1fr 40px}
+  @media(max-width:620px){.list-row{grid-template-columns:1fr 1fr}.list-row select{grid-column:1/-1}.list-row.f{grid-template-columns:1fr 1fr}}
+  .list-row input,.list-row select{padding:11px 12px;border-radius:10px;border:1px solid var(--line);font:14px var(--sans);background:var(--field);color:var(--text);width:100%;min-width:0}
+  .xbtn{border:none;background:transparent;color:var(--danger);font-size:16px;cursor:pointer;border-radius:10px}.xbtn:hover{background:var(--accent-soft)}
+  .btn.small{width:auto;padding:9px 16px;font-size:14px;border-radius:12px}
+  .photo-pick{display:flex;gap:16px;align-items:center}
+  .photo-pick img{width:84px;height:104px;object-fit:cover;border-radius:16px;background:var(--field)}
+  .gal-row{cursor:grab}.gal-row.drag{opacity:.4}.gal-row.over{outline:2px dashed var(--accent)}
+  .preview-pane{display:none}
+  @media(min-width:1100px){.preview-pane{display:block;position:sticky;top:78px}}
+  .pv-frame{border:1px solid var(--line);border-radius:26px;overflow:hidden;background:var(--card);box-shadow:var(--shadow);height:calc(100vh - 170px);min-height:480px}
+  .pv-frame iframe{width:100%;height:100%;border:0;display:block}
+  .pv-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:10px;padding:0 6px}
+  .preview-pane.open{display:block;position:fixed;inset:0;z-index:50;background:var(--bg);padding:12px}
+  .preview-pane.open .pv-frame{height:calc(100% - 40px);border-radius:18px}
+  #pvBtn{display:inline-flex}@media(min-width:1100px){#pvBtn,#pvClose{display:none}}
+  .savebar-inner{max-width:760px;display:flex;gap:10px;align-items:center}
+  .dirty{font-size:13px;color:var(--muted);white-space:nowrap;padding:0 6px}.dirty.on{color:var(--accent);font-weight:600}
+  @media(min-width:1100px){.savebar-inner{max-width:1320px;margin-left:auto;margin-right:auto}}
 </style>
 </head>
 <body>
-
-  <!-- ===== Экран входа ===== -->
-  <div class="login" id="loginView" style="display:flex;">
-    <div class="login-card">
-      <div class="lock">🔐</div>
-      <h1 id="loginTitle">Вход</h1>
-      <p class="sub" id="loginSub">Введи пароль, чтобы управлять сайтом</p>
-      <div class="field">
-        <label for="pw">Пароль</label>
-        <input type="password" id="pw" placeholder="••••••••" autocomplete="current-password" />
-      </div>
-      <div class="field" id="pw2wrap" style="display:none;">
-        <label for="pw2">Повтори пароль</label>
-        <input type="password" id="pw2" placeholder="••••••••" autocomplete="new-password" />
-      </div>
-      <button class="btn" id="loginBtn">Продолжить</button>
-      <div class="msg" id="loginMsg"></div>
-    </div>
+<div class="login" id="loginView" style="display:flex;">
+  <div class="login-card">
+    <div class="lock">🔐</div>
+    <h1 id="loginTitle">Вход</h1>
+    <p class="sub" id="loginSub">Введи пароль, чтобы управлять сайтом</p>
+    <div class="field"><label for="pw">Пароль</label><input type="password" id="pw" placeholder="••••••••" autocomplete="current-password" /></div>
+    <div class="field" id="pw2wrap" style="display:none;"><label for="pw2">Повтори пароль</label><input type="password" id="pw2" placeholder="••••••••" autocomplete="new-password" /></div>
+    <button class="btn" id="loginBtn">Продолжить</button>
+    <div class="msg" id="loginMsg"></div>
   </div>
+</div>
 
-  <!-- ===== Экран редактора ===== -->
-  <div id="editorView" style="display:none;">
-    <div class="topbar">
-      <div class="topbar-inner">
-        <span class="brand">Маша <small>админка</small></span>
-        <div class="actions">
-          <a class="btn ghost" href="./" target="_blank">Открыть сайт ↗</a>
-          <button class="btn ghost" id="logoutBtn">Выйти</button>
-        </div>
-      </div>
+<div id="editorView" style="display:none;">
+  <div class="topbar"><div class="topbar-inner">
+    <span class="brand">Маша <small>редактор сайта</small></span>
+    <div class="actions">
+      <button class="btn ghost" id="pvBtn">👁 Предпросмотр</button>
+      <a class="btn ghost" href="./" target="_blank">Открыть сайт ↗</a>
+      <button class="btn ghost" id="logoutBtn">Выйти</button>
     </div>
+  </div></div>
 
-    <div class="editor wrap">
-      <div class="card">
-        <div class="card-head">
-          <div class="card-icon">✍️</div>
-          <div><h2>Текст</h2><p class="hint">Имя, подзаголовок и рассказ о себе</p></div>
-        </div>
-        <div class="field"><label for="fName">Имя</label><input type="text" id="fName" /></div>
-        <div class="field"><label for="fSubtitle">Подзаголовок</label><input type="text" id="fSubtitle" placeholder="Коротко: чем занимаешься" /></div>
-        <div class="field" style="margin-bottom:0"><label for="fAbout">Обо мне</label><textarea id="fAbout"></textarea></div>
+  <div class="shell">
+    <div class="edcol">
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-tab="home">🏠 Главная</button>
+        <button class="tab" data-tab="about">👤 Обо мне</button>
+        <button class="tab" data-tab="gallery">🖼️ Галерея</button>
+        <button class="tab" data-tab="contacts">💬 Контакты</button>
+        <button class="tab" data-tab="look">🎨 Оформление</button>
+        <button class="tab" data-tab="settings">⚙️ Настройки</button>
       </div>
 
-      <div class="card">
-        <div class="card-head">
-          <div class="card-icon">🖼️</div>
-          <div><h2>Галерея</h2><p class="hint">Фото загружаются сразу. Порядок и подписи — сохрани кнопкой внизу</p></div>
-          <span class="count" id="galCount">0</span>
+      <div class="pane on" data-pane="home"><div class="card">
+        <div class="card-head"><div class="card-icon">🏠</div><div><h2>Главная страница</h2><p class="hint">Первое, что видят посетители</p></div></div>
+        <div class="row2">
+          <div class="field"><label>Имя</label><input type="text" data-k="site.name" /></div>
+          <div class="field"><label>Приветствие</label><input type="text" data-k="site.greeting" placeholder="Привет, я" /></div>
         </div>
+        <div class="field"><label>Метка над именем</label><input type="text" data-k="site.eyebrow" placeholder="Портфолио" /><div class="help">Маленькая надпись в рамке. Оставь пустой, чтобы убрать.</div></div>
+        <div class="field"><label>Подзаголовок</label><input type="text" data-k="site.subtitle" placeholder="Коротко: чем занимаешься" /></div>
+        <div class="field" style="margin-bottom:0"><label>Текст в подвале</label><input type="text" data-k="site.footer" placeholder="Сделано с любовью" /></div>
+      </div></div>
+
+      <div class="pane" data-pane="about"><div class="card">
+        <div class="card-head"><div class="card-icon">👤</div><div><h2>Обо мне</h2><p class="hint">Отдельная вкладка сайта</p></div></div>
+        <div class="field"><label>Заголовок</label><input type="text" data-k="about.title" placeholder="Обо мне" /></div>
+        <div class="lbl">Фото</div>
+        <div class="photo-pick field"><img id="aboutPhoto" alt="" /><div>
+          <button class="btn ghost small" id="aboutPhotoBtn">Выбрать фото</button>
+          <button class="btn ghost small" id="aboutPhotoDel" style="margin-left:6px">Убрать</button>
+          <input type="file" id="aboutFile" accept="image/*" hidden />
+          <div class="help" id="aboutUp"></div></div></div>
+        <div class="field"><label>Текст</label><textarea data-k="about.text"></textarea></div>
+        <div class="lbl">Факты (необязательно)</div>
+        <div id="factsList"></div>
+        <button class="btn ghost small" id="addFact">+ Добавить факт</button>
+      </div></div>
+
+      <div class="pane" data-pane="gallery"><div class="card">
+        <div class="card-head"><div class="card-icon">🖼️</div><div><h2>Галерея</h2><p class="hint">Перетаскивай плитки или жми ←/→. Фото сжимаются перед загрузкой</p></div><span class="count" id="galCount">0</span></div>
+        <div class="field"><label>Заголовок вкладки</label><input type="text" data-k="galleryTitle" placeholder="Галерея" /></div>
         <div class="gal-list" id="galList"></div>
-        <div class="drop" id="drop">
-          <div class="plus">+</div>
-          <b>Добавить фото</b>
-          Перетащи сюда или нажми, чтобы выбрать
-          <input type="file" id="fileInput" accept="image/*" multiple />
-        </div>
+        <div class="drop" id="drop"><div class="plus">+</div><b>Добавить фото</b>Перетащи сюда или нажми, чтобы выбрать
+          <input type="file" id="fileInput" accept="image/*" multiple /></div>
         <div class="up-progress" id="upProgress"></div>
+      </div></div>
+
+      <div class="pane" data-pane="contacts"><div class="card">
+        <div class="card-head"><div class="card-icon">💬</div><div><h2>Контакты</h2><p class="hint">Кнопки на главной странице</p></div></div>
+        <div id="contactsList"></div>
+        <button class="btn ghost small" id="addContact">+ Добавить контакт</button>
+        <div class="help" style="margin-top:12px">Для Telegram, Instagram и VK достаточно ника, например <b>@masha</b>.</div>
+      </div></div>
+
+      <div class="pane" data-pane="look">
+        <div class="card"><div class="card-head"><div class="card-icon">🎨</div><div><h2>Оформление</h2><p class="hint">Цвета и шрифты всего сайта</p></div></div>
+          <div class="lbl">Цветовая схема</div>
+          <div class="swatches">
+            <button class="sw" data-set="theme.palette" data-val="coral" style="background:linear-gradient(135deg,#e0583f,#f0a35e)" title="Коралл"></button>
+            <button class="sw" data-set="theme.palette" data-val="ocean" style="background:linear-gradient(135deg,#2f6fed,#35c2d6)" title="Океан"></button>
+            <button class="sw" data-set="theme.palette" data-val="forest" style="background:linear-gradient(135deg,#2f8f5b,#b5c94a)" title="Лес"></button>
+            <button class="sw" data-set="theme.palette" data-val="violet" style="background:linear-gradient(135deg,#8b5cf6,#ec6bb0)" title="Сирень"></button>
+            <button class="sw" data-set="theme.palette" data-val="mono" style="background:linear-gradient(135deg,#222,#888)" title="Графит"></button>
+          </div>
+          <div class="lbl">Тема</div>
+          <div class="seg"><button data-set="theme.mode" data-val="auto">Как в системе</button><button data-set="theme.mode" data-val="light">Светлая</button><button data-set="theme.mode" data-val="dark">Тёмная</button></div>
+          <div class="lbl">Шрифт заголовков</div>
+          <div class="seg"><button data-set="theme.font" data-val="serif">С засечками</button><button data-set="theme.font" data-val="sans">Без засечек</button></div>
+        </div>
+        <div class="card"><div class="card-head"><div class="card-icon">🧭</div><div><h2>Разделы</h2><p class="hint">Что показывать на сайте</p></div></div>
+          <label class="switch"><div><b>Обо мне</b><span>Вкладка с рассказом</span></div><input type="checkbox" data-bool="sections.about" /></label>
+          <label class="switch"><div><b>Галерея</b><span>Вкладка с фотографиями</span></div><input type="checkbox" data-bool="sections.gallery" /></label>
+        </div>
+      </div>
+
+      <div class="pane" data-pane="settings">
+        <div class="card"><div class="card-head"><div class="card-icon">🔎</div><div><h2>Поисковики и соцсети</h2><p class="hint">Заголовок вкладки браузера и описание</p></div></div>
+          <div class="field"><label>Заголовок страницы</label><input type="text" data-k="seo.title" placeholder="Маша — портфолио" /></div>
+          <div class="field" style="margin-bottom:0"><label>Описание</label><input type="text" data-k="seo.description" placeholder="Коротко о сайте" /></div>
+        </div>
+        <div class="card"><div class="card-head"><div class="card-icon">🔑</div><div><h2>Смена пароля</h2></div></div>
+          <div class="row2"><div class="field"><label>Новый пароль</label><input type="password" id="newPw" autocomplete="new-password" /></div>
+          <div class="field"><label>Повтори</label><input type="password" id="newPw2" autocomplete="new-password" /></div></div>
+          <button class="btn ghost small" id="changePw">Сменить пароль</button><div class="msg" id="pwMsg"></div>
+        </div>
+        <div class="card"><div class="card-head"><div class="card-icon">💾</div><div><h2>Резервная копия</h2><p class="hint">Скачать все тексты и ссылки на фото одним файлом</p></div></div>
+          <button class="btn ghost small" id="exportBtn">Скачать content.json</button></div>
       </div>
     </div>
 
-    <div class="savebar">
-      <div class="savebar-inner">
-        <button class="btn" id="saveBtn">Сохранить изменения</button>
-      </div>
-    </div>
-    <div class="toast" id="toast"></div>
+    <aside class="preview-pane" id="pvPane">
+      <div class="pv-head"><span>Живой предпросмотр</span><button class="btn ghost small" id="pvClose">Закрыть</button></div>
+      <div class="pv-frame"><iframe id="pvFrame" src="./?preview=1" title="Предпросмотр"></iframe></div>
+    </aside>
   </div>
+
+  <div class="savebar"><div class="savebar-inner">
+    <span class="dirty" id="dirty">Всё сохранено</span>
+    <button class="btn" id="saveBtn">Сохранить изменения</button>
+  </div></div>
+  <div class="toast" id="toast"></div>
+</div>
 
 <script src="./supabase.js"></script>
 <script>
 const SUPABASE_URL = "https://xxauwkymufehmoprmhay.supabase.co";
 const SUPABASE_PUB = "sb_publishable_ABzZaqdreTP8pe6L3fMFRA_kYo6J81W";
 const ADMIN_EMAIL = "sestra@mashka-alkashka.ru";
-const BUCKET = "portfolio";
-const CONTENT_PATH = "content.json";
-const CONTENT_URL = SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + CONTENT_PATH;
+const BUCKET = "portfolio", CONTENT_PATH = "content.json";
+const PUB = SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/";
+const CONTENT_URL = PUB + CONTENT_PATH;
 
 if (!window.supabase || !window.supabase.createClient) {
   document.addEventListener("DOMContentLoaded", () => {
-    const lv = document.getElementById("loginView");
-    lv.style.display = "flex";
     document.getElementById("loginTitle").textContent = "Ошибка загрузки";
     document.getElementById("loginSub").textContent = "Не удалось загрузить библиотеку. Проверь интернет и обнови страницу.";
-    document.getElementById("loginBtn").style.display = "none";
-    document.getElementById("pw").parentElement.style.display = "none";
+    document.getElementById("loginBtn").style.display = "none"; document.getElementById("pw").parentElement.style.display = "none";
   });
   throw new Error("supabase library not loaded");
 }
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUB);
-
-let editing = null;   // загруженный content.json
-let photos = [];      // [{url, caption}]
-let session = null;
-
 const $ = id => document.getElementById(id);
+let C = null, session = null, dirty = false, removed = new Set();
 
 function msg(el, text, cls) { el.textContent = text; el.className = "msg" + (cls ? " " + cls : ""); }
-
-// показываем любую фатальную ошибку прямо на экране (а не чёрную страницу)
 function showFatal(text) {
-  const lv = document.getElementById("loginView");
-  if (lv) lv.style.display = "flex";
-  const t = document.getElementById("loginTitle");
-  const s = document.getElementById("loginSub");
-  const b = document.getElementById("loginBtn");
-  if (t) t.textContent = "Ошибка";
-  if (s) s.textContent = text || "Что-то пошло не так";
-  if (b) b.style.display = "none";
-  const pwf = document.getElementById("pw");
-  if (pwf) pwf.parentElement.style.display = "none";
+  $("loginView").style.display = "flex"; $("editorView").style.display = "none";
+  $("loginTitle").textContent = "Ошибка"; $("loginSub").textContent = text || "Что-то пошло не так";
+  $("loginBtn").style.display = "none"; $("pw").parentElement.style.display = "none";
 }
-window.addEventListener("error", e => showFatal("JS: " + (e.message || "неизвестная ошибка")));
-window.addEventListener("unhandledrejection", e => showFatal("Promise: " + ((e.reason && e.reason.message) || e.reason || "ошибка")));
+addEventListener("error", e => showFatal("JS: " + (e.message || "неизвестная ошибка")));
+addEventListener("unhandledrejection", e => showFatal("Promise: " + ((e.reason && e.reason.message) || e.reason || "ошибка")));
 
 async function fetchContent() {
   const r = await fetch(CONTENT_URL + "?t=" + Date.now(), { cache: "no-store" });
   if (!r.ok) throw new Error("content " + r.status);
   return await r.json();
 }
+let toastTimer;
+function toast(t, err) { const el = $("toast"); el.textContent = t; el.className = "toast show" + (err ? " err" : ""); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 3200); }
+const esc = s => String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
 
-/* ---------------- вход ---------------- */
+/* ---------- вход (как раньше) ---------- */
 async function initLogin() {
-  const { data } = await supabase.auth.getSession();
-  session = data.session;
+  const { data } = await supabase.auth.getSession(); session = data.session;
   if (session) { await openEditor(); return; }
-
-  // определяем режим: аккаунт ещё не создан?
   let configured = false;
-  try {
-    const c = await fetchContent();
-    configured = !!(c && c.auth && c.auth.active);
-  } catch (e) { /* content ещё нет — значит первый запуск */ }
-
+  try { const c = await fetchContent(); configured = !!(c && c.auth && c.auth.active); } catch (e) {}
   $("loginView").style.display = "flex";
-  if (configured) {
-    $("loginTitle").textContent = "Вход";
-    $("loginSub").textContent = "Введи пароль, чтобы управлять сайтом";
-    $("pw2wrap").style.display = "none";
-  } else {
-    $("loginTitle").textContent = "Первый запуск";
-    $("loginSub").textContent = "Придумай пароль — он защитит админку";
-    $("pw2wrap").style.display = "block";
-  }
+  $("loginTitle").textContent = configured ? "Вход" : "Первый запуск";
+  $("loginSub").textContent = configured ? "Введи пароль, чтобы управлять сайтом" : "Придумай пароль — он защитит админку";
+  $("pw2wrap").style.display = configured ? "none" : "block";
   $("loginBtn").textContent = configured ? "Войти" : "Создать пароль";
   $("loginBtn").onclick = configured ? doLogin : doSignup;
-  $("pw").value = ""; $("pw2").value = ""; msg($("loginMsg"), "");
-  $("pw").focus();
+  $("pw").value = ""; $("pw2").value = ""; msg($("loginMsg"), ""); $("pw").focus();
 }
-
 async function doLogin() {
-  const pw = $("pw").value;
-  if (!pw) { msg($("loginMsg"), "Введи пароль", "err"); return; }
+  const pw = $("pw").value; if (!pw) { msg($("loginMsg"), "Введи пароль", "err"); return; }
   const { data, error } = await supabase.auth.signInWithPassword({ email: ADMIN_EMAIL, password: pw });
   if (error) { msg($("loginMsg"), error.message === "Invalid login credentials" ? "Неверный пароль" : error.message, "err"); return; }
-  session = data.session;
-  await openEditor();
+  session = data.session; await openEditor();
 }
-
 async function doSignup() {
   const pw = $("pw").value, pw2 = $("pw2").value;
   if (pw.length < 6) { msg($("loginMsg"), "Пароль должен быть не короче 6 символов", "err"); return; }
   if (pw !== pw2) { msg($("loginMsg"), "Пароли не совпадают", "err"); return; }
   const { data, error } = await supabase.auth.signUp({ email: ADMIN_EMAIL, password: pw });
   if (error) { msg($("loginMsg"), error.message, "err"); return; }
-  // email-подтверждение отключено, сессия приходит сразу
   if (!data.session) { msg($("loginMsg"), "Не удалось создать аккаунт. Обнови страницу и попробуй снова.", "err"); return; }
-  session = data.session;
-  await openEditor();
+  session = data.session; await openEditor();
 }
-
 $("pw").addEventListener("keydown", e => { if (e.key === "Enter") $("loginBtn").click(); });
 $("pw2").addEventListener("keydown", e => { if (e.key === "Enter") $("loginBtn").click(); });
 
-/* ---------------- редактор ---------------- */
+/* ---------- данные ---------- */
+const getP = (o, p) => p.split(".").reduce((a, k) => (a == null ? a : a[k]), o);
+function setP(o, p, v) { const ks = p.split("."); const last = ks.pop(); ks.reduce((a, k) => (a[k] = a[k] || {}), o)[last] = v; }
+
+function normalize(c) {
+  c = c || {}; const s = c.site || {}, a = c.about || {};
+  return {
+    v: 2, auth: { active: true },
+    site: { name: s.name || "Маша", subtitle: s.subtitle || "", eyebrow: s.eyebrow != null ? s.eyebrow : "Портфолио",
+            greeting: s.greeting != null ? s.greeting : "Привет, я", footer: s.footer != null ? s.footer : "Сделано с любовью" },
+    about: { title: a.title || "Обо мне", text: a.text != null ? a.text : (s.about || ""), photo: a.photo || "", facts: a.facts || [] },
+    galleryTitle: c.galleryTitle || "Галерея",
+    gallery: (c.gallery || []).map(it => ({ url: it.url || "", caption: it.caption || "" })),
+    contacts: c.contacts || [],
+    theme: Object.assign({ palette: "coral", mode: "auto", font: "serif" }, c.theme),
+    sections: Object.assign({ about: true, gallery: true }, c.sections),
+    seo: Object.assign({ title: "", description: "" }, c.seo)
+  };
+}
+
 async function openEditor() {
-  $("loginView").style.display = "none";
-  $("editorView").style.display = "block";
-
-  try { editing = await fetchContent(); }
-  catch (e) {
-    editing = { v: 1, auth: { active: true }, site: { name: "Маша", subtitle: "", about: "" }, gallery: [] };
-  }
-
-  const s = editing.site || {};
-  $("fName").value = s.name || "";
-  $("fSubtitle").value = s.subtitle || "";
-  $("fAbout").value = s.about || "";
-  photos = (editing.gallery || []).map(it => ({ url: it.url || "", caption: it.caption || "" }));
-  renderGallery();
+  $("loginView").style.display = "none"; $("editorView").style.display = "block";
+  try { C = normalize(await fetchContent()); } catch (e) { C = normalize({}); }
+  syncAll(); markClean();
 }
 
+/* ---------- предпросмотр и «грязное» состояние ---------- */
+function sendPreview() { const f = $("pvFrame"); if (f && f.contentWindow) f.contentWindow.postMessage({ type: "preview", data: C }, "*"); }
+addEventListener("message", e => { if (e.data && e.data.type === "preview-ready" && C) sendPreview(); });
+function changed() { dirty = true; $("dirty").textContent = "● Есть несохранённые изменения"; $("dirty").classList.add("on"); sendPreview(); }
+function markClean() { dirty = false; $("dirty").textContent = "Всё сохранено"; $("dirty").classList.remove("on"); }
+addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- привязка полей ---------- */
+document.addEventListener("input", e => {
+  const t = e.target; if (!C) return;
+  if (t.dataset.k) { setP(C, t.dataset.k, t.value); changed(); }
+});
+document.addEventListener("change", e => {
+  const t = e.target; if (!C) return;
+  if (t.dataset.bool) { setP(C, t.dataset.bool, t.checked); changed(); }
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-set]"); if (!b || !C) return;
+  setP(C, b.dataset.set, b.dataset.val); syncUI(); changed();
+});
+function syncUI() {
+  document.querySelectorAll("[data-k]").forEach(el => { const v = getP(C, el.dataset.k); if (document.activeElement !== el) el.value = v == null ? "" : v; });
+  document.querySelectorAll("[data-bool]").forEach(el => { el.checked = getP(C, el.dataset.bool) !== false; });
+  document.querySelectorAll("[data-set]").forEach(el => el.classList.toggle("on", getP(C, el.dataset.set) === el.dataset.val));
+  const ph = $("aboutPhoto"); ph.src = C.about.photo || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>";
+  $("aboutPhotoDel").style.display = C.about.photo ? "" : "none";
+}
+function syncAll() { syncUI(); renderGallery(); renderContacts(); renderFacts(); sendPreview(); }
+
+/* вкладки */
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t === b));
+  document.querySelectorAll(".pane").forEach(p => p.classList.toggle("on", p.dataset.pane === b.dataset.tab));
+});
+$("pvBtn").onclick = () => { $("pvPane").classList.add("open"); sendPreview(); };
+$("pvClose").onclick = () => $("pvPane").classList.remove("open");
+
+/* ---------- списки: факты и контакты ---------- */
+function renderFacts() {
+  $("factsList").innerHTML = C.about.facts.map((f, i) =>
+    '<div class="list-row f"><input data-fi="' + i + '" data-f="label" value="' + esc(f.label) + '" placeholder="Например: Город" />' +
+    '<input data-fi="' + i + '" data-f="value" value="' + esc(f.value) + '" placeholder="Москва" />' +
+    '<button class="xbtn" data-fdel="' + i + '">✕</button></div>').join("");
+}
+$("factsList").addEventListener("input", e => { const t = e.target; if (t.dataset.f) { C.about.facts[+t.dataset.fi][t.dataset.f] = t.value; changed(); } });
+$("factsList").addEventListener("click", e => { const b = e.target.closest("[data-fdel]"); if (b) { C.about.facts.splice(+b.dataset.fdel, 1); renderFacts(); changed(); } });
+$("addFact").onclick = () => { C.about.facts.push({ label: "", value: "" }); renderFacts(); changed(); };
+
+const CTYPES = [["telegram","Telegram"],["instagram","Instagram"],["vk","VK"],["email","Почта"],["phone","Телефон"],["link","Ссылка"]];
+function renderContacts() {
+  $("contactsList").innerHTML = C.contacts.map((c, i) =>
+    '<div class="list-row"><select data-ci="' + i + '" data-c="type">' + CTYPES.map(t => '<option value="' + t[0] + '"' + (c.type === t[0] ? " selected" : "") + ">" + t[1] + "</option>").join("") + "</select>" +
+    '<input data-ci="' + i + '" data-c="label" value="' + esc(c.label) + '" placeholder="Подпись кнопки" />' +
+    '<input data-ci="' + i + '" data-c="value" value="' + esc(c.value) + '" placeholder="@ник, почта, номер…" />' +
+    '<button class="xbtn" data-cdel="' + i + '">✕</button></div>').join("") || '<div class="hint" style="margin:0 0 14px">Контактов пока нет</div>';
+}
+$("contactsList").addEventListener("input", e => { const t = e.target; if (t.dataset.c) { C.contacts[+t.dataset.ci][t.dataset.c] = t.value; changed(); } });
+$("contactsList").addEventListener("click", e => { const b = e.target.closest("[data-cdel]"); if (b) { C.contacts.splice(+b.dataset.cdel, 1); renderContacts(); changed(); } });
+$("addContact").onclick = () => { C.contacts.push({ type: "telegram", label: "", value: "" }); renderContacts(); changed(); };
+
+/* ---------- галерея ---------- */
+let dragI = null;
 function renderGallery() {
-  const list = $("galList");
-  $("galCount").textContent = photos.length;
-  if (!photos.length) {
-    list.innerHTML = '<div class="gal-empty">Фотографий пока нет — добавь первую!</div>';
-    return;
+  const list = $("galList"), P = C.gallery; $("galCount").textContent = P.length;
+  if (!P.length) { list.innerHTML = '<div class="gal-empty">Фотографий пока нет — добавь первую!</div>'; return; }
+  list.innerHTML = P.map((p, i) =>
+    '<div class="gal-row" draggable="true" data-i="' + i + '"><div class="thumb"><img src="' + esc(p.url) + '" alt="" draggable="false" /><span class="num">' + (i + 1) + "</span>" +
+    '<div class="tools"><button class="tool" data-mv="-1" data-i="' + i + '"' + (i === 0 ? " disabled" : "") + '>←</button><button class="tool" data-mv="1" data-i="' + i + '"' + (i === P.length - 1 ? " disabled" : "") + '>→</button><button class="tool del" data-del="' + i + '">✕</button></div></div>' +
+    '<div class="cap-input"><input type="text" data-cap="' + i + '" value="' + esc(p.caption) + '" placeholder="Подпись (необязательно)" /></div></div>').join("");
+}
+const gl = $("galList");
+gl.addEventListener("input", e => { const t = e.target; if (t.dataset.cap != null && t.dataset.cap !== "") { C.gallery[+t.dataset.cap].caption = t.value; changed(); } });
+gl.addEventListener("click", e => {
+  const mv = e.target.closest("[data-mv]"), del = e.target.closest("[data-del]");
+  if (mv) { const i = +mv.dataset.i, j = i + +mv.dataset.mv; [C.gallery[i], C.gallery[j]] = [C.gallery[j], C.gallery[i]]; renderGallery(); changed(); }
+  if (del && confirm("Убрать это фото из галереи?")) { removed.add(C.gallery[+del.dataset.del].url); C.gallery.splice(+del.dataset.del, 1); renderGallery(); changed(); }
+});
+gl.addEventListener("dragstart", e => { const r = e.target.closest(".gal-row"); if (r) { dragI = +r.dataset.i; r.classList.add("drag"); } });
+gl.addEventListener("dragend", () => { dragI = null; gl.querySelectorAll(".drag,.over").forEach(x => x.classList.remove("drag", "over")); });
+gl.addEventListener("dragover", e => { const r = e.target.closest(".gal-row"); if (r && dragI != null) { e.preventDefault(); gl.querySelectorAll(".over").forEach(x => x.classList.remove("over")); r.classList.add("over"); } });
+gl.addEventListener("drop", e => {
+  const r = e.target.closest(".gal-row"); if (!r || dragI == null) return; e.preventDefault();
+  const j = +r.dataset.i; if (j !== dragI) { const [m] = C.gallery.splice(dragI, 1); C.gallery.splice(j, 0, m); renderGallery(); changed(); }
+});
+
+/* ---------- загрузка фото (со сжатием) ---------- */
+async function prepImage(f) {
+  let ext = (f.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+  if (!/^image\/(jpeg|png|webp)$/.test(f.type)) return { blob: f, ext };
+  try {
+    const bmp = await createImageBitmap(f), k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+    if (k === 1 && f.size < 500000) return { blob: f, ext };
+    const cv = document.createElement("canvas"); cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k);
+    const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(bmp, 0, 0, cv.width, cv.height);
+    const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", 0.86));
+    return blob && blob.size < f.size ? { blob, ext: "jpg" } : { blob: f, ext };
+  } catch (e) { return { blob: f, ext }; }
+}
+async function uploadOne(f) {
+  const { blob, ext } = await prepImage(f);
+  const path = "photos/" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
+  const { error } = await supabase.storage.from(BUCKET).upload(path, blob, { upsert: false, contentType: blob.type || undefined });
+  if (error) throw error; return PUB + path;
+}
+async function uploadFiles(files) {
+  const list = Array.from(files).filter(f => f.type.startsWith("image/")), pr = $("upProgress");
+  pr.style.display = "block";
+  for (let i = 0; i < list.length; i++) {
+    pr.textContent = "Загружаю " + (i + 1) + "/" + list.length + "…";
+    try { C.gallery.push({ url: await uploadOne(list[i]), caption: "" }); renderGallery(); changed(); }
+    catch (e) { toast("Ошибка загрузки: " + (e.message || e), true); }
   }
-  list.innerHTML = photos.map((p, i) =>
-    '<div class="gal-row">' +
-      '<div class="thumb"><img src="' + esc(p.url) + '" alt="" />' +
-        '<span class="num">' + (i + 1) + '</span>' +
-        '<div class="tools">' +
-          '<button class="tool up" data-i="' + i + '" title="Раньше"' + (i === 0 ? ' disabled' : '') + '>←</button>' +
-          '<button class="tool dn" data-i="' + i + '" title="Позже"' + (i === photos.length - 1 ? ' disabled' : '') + '>→</button>' +
-          '<button class="tool del" data-i="' + i + '" title="Удалить">✕</button>' +
-        '</div></div>' +
-      '<div class="cap-input"><input type="text" value="' + esc(p.caption) + '" placeholder="Подпись (необязательно)" data-i="' + i + '" /></div>' +
-    '</div>'
-  ).join("");
-
-  list.querySelectorAll(".cap-input input").forEach(inp => {
-    inp.addEventListener("input", () => { photos[+inp.dataset.i].caption = inp.value; });
-  });
-  const move = (i, d) => { const j = i + d; if (j < 0 || j >= photos.length) return; [photos[i], photos[j]] = [photos[j], photos[i]]; renderGallery(); };
-  list.querySelectorAll(".up").forEach(b => b.addEventListener("click", () => move(+b.dataset.i, -1)));
-  list.querySelectorAll(".dn").forEach(b => b.addEventListener("click", () => move(+b.dataset.i, 1)));
-  list.querySelectorAll(".del").forEach(btn => {
-    btn.addEventListener("click", () => {
-      if (!confirm("Убрать это фото из галереи?")) return;
-      photos.splice(+btn.dataset.i, 1);
-      renderGallery();
-    });
-  });
+  pr.style.display = "none";
 }
-
-let toastTimer;
-function toast(text, isErr) {
-  const t = $("toast"); t.textContent = text; t.className = "toast show" + (isErr ? " err" : "");
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
-}
-
-function esc(s) {
-  return String(s == null ? "" : s)
-    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-}
-
-/* ---------------- загрузка фото ---------------- */
 const drop = $("drop"), fileInput = $("fileInput");
 drop.addEventListener("click", () => fileInput.click());
-["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
-["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
-drop.addEventListener("drop", e => {
-  const files = e.dataTransfer.files;
-  if (files && files.length) uploadFiles(files);
-});
-fileInput.addEventListener("change", () => {
-  if (fileInput.files.length) uploadFiles(fileInput.files);
-  fileInput.value = "";
-});
+["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => { if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files); });
+fileInput.addEventListener("change", () => { if (fileInput.files.length) uploadFiles(fileInput.files); fileInput.value = ""; });
 
-async function uploadFiles(files) {
-  const list = Array.from(files);
-  $("upProgress").style.display = "block";
-  for (let i = 0; i < list.length; i++) {
-    const f = list[i];
-    if (!f.type.startsWith("image/")) continue;
-    $("upProgress").textContent = "Загружаю " + (i+1) + "/" + list.length + "…";
-    const ext = (f.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
-    const path = "photos/" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
-    const { error } = await supabase.storage.from(BUCKET).upload(path, f, { upsert: false });
-    if (error) { $("upProgress").textContent = "Ошибка загрузки: " + error.message; toast("Ошибка загрузки: " + error.message, true); continue; }
-    photos.push({ url: SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + path, caption: "" });
-    renderGallery();
-  }
-  $("upProgress").style.display = "none";
-  $("upProgress").textContent = "";
-}
+$("aboutPhotoBtn").onclick = () => $("aboutFile").click();
+$("aboutFile").addEventListener("change", async () => {
+  const f = $("aboutFile").files[0]; $("aboutFile").value = ""; if (!f) return;
+  $("aboutUp").textContent = "Загружаю…";
+  try { if (C.about.photo) removed.add(C.about.photo); C.about.photo = await uploadOne(f); syncUI(); changed(); $("aboutUp").textContent = ""; }
+  catch (e) { $("aboutUp").textContent = ""; toast("Ошибка загрузки: " + (e.message || e), true); }
+});
+$("aboutPhotoDel").onclick = () => { removed.add(C.about.photo); C.about.photo = ""; syncUI(); changed(); };
 
-/* ---------------- сохранение ---------------- */
+/* ---------- сохранение ---------- */
 async function doSave() {
-  const btn = $("saveBtn");
-  btn.disabled = true; btn.textContent = "Сохраняю…";
+  const btn = $("saveBtn"); btn.disabled = true; btn.textContent = "Сохраняю…";
   try {
-    const payload = {
-      v: 1,
-      auth: { active: true },
-      site: { name: $("fName").value.trim(), subtitle: $("fSubtitle").value.trim(), about: $("fAbout").value },
-      gallery: photos
-    };
-    const json = JSON.stringify(payload, null, 2);
-    const { error } = await supabase.storage.from(BUCKET).upload(
-      CONTENT_PATH,
-      new Blob([json], { type: "application/json" }),
-      { upsert: true, contentType: "application/json" }
-    );
+    C.site.name = (C.site.name || "").trim();
+    const { error } = await supabase.storage.from(BUCKET).upload(CONTENT_PATH,
+      new Blob([JSON.stringify(C, null, 2)], { type: "application/json" }), { upsert: true, contentType: "application/json" });
     if (error) throw error;
-    editing = payload;
-    btn.textContent = "✓ Сохранено!"; btn.classList.add("saved"); toast("Изменения сохранены ✓");
+    // удаляем из хранилища фото, которых больше нет на сайте
+    const used = new Set(C.gallery.map(p => p.url).concat(C.about.photo));
+    const paths = [...removed].filter(u => u && !used.has(u) && u.startsWith(PUB + "photos/")).map(u => u.slice(PUB.length));
+    if (paths.length) await supabase.storage.from(BUCKET).remove(paths).catch(() => {});
+    removed.clear(); markClean();
+    btn.textContent = "✓ Сохранено!"; btn.classList.add("saved"); toast("Изменения опубликованы ✓");
     setTimeout(() => { btn.textContent = "Сохранить изменения"; btn.classList.remove("saved"); }, 1800);
-  } catch (e) {
-    btn.textContent = "Ошибка — попробуй ещё раз";
-    toast("Не удалось сохранить: " + (e.message || e), true);
-  } finally {
-    btn.disabled = false;
-  }
+  } catch (e) { btn.textContent = "Сохранить изменения"; toast("Не удалось сохранить: " + (e.message || e), true); }
+  finally { btn.disabled = false; }
 }
 $("saveBtn").addEventListener("click", doSave);
+addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key === "s" && C) { e.preventDefault(); doSave(); } });
 
+/* ---------- настройки ---------- */
+$("changePw").onclick = async () => {
+  const a = $("newPw").value, b = $("newPw2").value;
+  if (a.length < 6) return msg($("pwMsg"), "Минимум 6 символов", "err");
+  if (a !== b) return msg($("pwMsg"), "Пароли не совпадают", "err");
+  const { error } = await supabase.auth.updateUser({ password: a });
+  if (error) return msg($("pwMsg"), error.message, "err");
+  $("newPw").value = $("newPw2").value = ""; msg($("pwMsg"), "Пароль изменён ✓", "ok");
+};
+$("exportBtn").onclick = () => {
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(C, null, 2)], { type: "application/json" }));
+  a.download = "content-backup-" + new Date().toISOString().slice(0, 10) + ".json"; a.click(); URL.revokeObjectURL(a.href);
+};
 $("logoutBtn").addEventListener("click", async () => {
-  await supabase.auth.signOut();
-  session = null;
-  location.reload();
+  if (dirty && !confirm("Есть несохранённые изменения. Выйти без сохранения?")) return;
+  dirty = false; await supabase.auth.signOut(); location.reload();
 });
 
-// дефолтный обработчик: если настоящий не подцепился — покажем ошибку, а не «молчание»
 $("loginBtn").onclick = () => msg($("loginMsg"), "Страница ещё не готова — обнови её (Ctrl+F5).", "err");
-
 initLogin().catch(e => showFatal("init: " + (e.message || e)));
 </script>
 </body>
