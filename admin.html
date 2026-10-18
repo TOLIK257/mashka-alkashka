@@ -332,7 +332,7 @@ if (!window.supabase || !window.supabase.createClient) {
   });
   throw new Error("supabase library not loaded");
 }
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUB);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUB);
 const $ = id => document.getElementById(id);
 let C = null, session = null, dirty = false, removed = new Set();
 
@@ -356,7 +356,7 @@ const esc = s => String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"
 
 /* ---------- вход (как раньше) ---------- */
 async function initLogin() {
-  const { data } = await supabase.auth.getSession(); session = data.session;
+  const { data } = await sb.auth.getSession(); session = data.session;
   if (session) { await openEditor(); return; }
   let configured = false;
   try { const c = await fetchContent(); configured = !!(c && c.auth && c.auth.active); } catch (e) {}
@@ -370,7 +370,7 @@ async function initLogin() {
 }
 async function doLogin() {
   const pw = $("pw").value; if (!pw) { msg($("loginMsg"), "Введи пароль", "err"); return; }
-  const { data, error } = await supabase.auth.signInWithPassword({ email: ADMIN_EMAIL, password: pw });
+  const { data, error } = await sb.auth.signInWithPassword({ email: ADMIN_EMAIL, password: pw });
   if (error) { msg($("loginMsg"), error.message === "Invalid login credentials" ? "Неверный пароль" : error.message, "err"); return; }
   session = data.session; await openEditor();
 }
@@ -378,7 +378,7 @@ async function doSignup() {
   const pw = $("pw").value, pw2 = $("pw2").value;
   if (pw.length < 6) { msg($("loginMsg"), "Пароль должен быть не короче 6 символов", "err"); return; }
   if (pw !== pw2) { msg($("loginMsg"), "Пароли не совпадают", "err"); return; }
-  const { data, error } = await supabase.auth.signUp({ email: ADMIN_EMAIL, password: pw });
+  const { data, error } = await sb.auth.signUp({ email: ADMIN_EMAIL, password: pw });
   if (error) { msg($("loginMsg"), error.message, "err"); return; }
   if (!data.session) { msg($("loginMsg"), "Не удалось создать аккаунт. Обнови страницу и попробуй снова.", "err"); return; }
   session = data.session; await openEditor();
@@ -514,7 +514,7 @@ async function prepImage(f) {
 async function uploadOne(f) {
   const { blob, ext } = await prepImage(f);
   const path = "photos/" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
-  const { error } = await supabase.storage.from(BUCKET).upload(path, blob, { upsert: false, contentType: blob.type || undefined });
+  const { error } = await sb.storage.from(BUCKET).upload(path, blob, { upsert: false, contentType: blob.type || undefined });
   if (error) throw error; return PUB + path;
 }
 async function uploadFiles(files) {
@@ -548,13 +548,13 @@ async function doSave() {
   const btn = $("saveBtn"); btn.disabled = true; btn.textContent = "Сохраняю…";
   try {
     C.site.name = (C.site.name || "").trim();
-    const { error } = await supabase.storage.from(BUCKET).upload(CONTENT_PATH,
+    const { error } = await sb.storage.from(BUCKET).upload(CONTENT_PATH,
       new Blob([JSON.stringify(C, null, 2)], { type: "application/json" }), { upsert: true, contentType: "application/json" });
     if (error) throw error;
     // удаляем из хранилища фото, которых больше нет на сайте
     const used = new Set(C.gallery.map(p => p.url).concat(C.about.photo));
     const paths = [...removed].filter(u => u && !used.has(u) && u.startsWith(PUB + "photos/")).map(u => u.slice(PUB.length));
-    if (paths.length) await supabase.storage.from(BUCKET).remove(paths).catch(() => {});
+    if (paths.length) await sb.storage.from(BUCKET).remove(paths).catch(() => {});
     removed.clear(); markClean();
     btn.textContent = "✓ Сохранено!"; btn.classList.add("saved"); toast("Изменения опубликованы ✓");
     setTimeout(() => { btn.textContent = "Сохранить изменения"; btn.classList.remove("saved"); }, 1800);
@@ -569,7 +569,7 @@ $("changePw").onclick = async () => {
   const a = $("newPw").value, b = $("newPw2").value;
   if (a.length < 6) return msg($("pwMsg"), "Минимум 6 символов", "err");
   if (a !== b) return msg($("pwMsg"), "Пароли не совпадают", "err");
-  const { error } = await supabase.auth.updateUser({ password: a });
+  const { error } = await sb.auth.updateUser({ password: a });
   if (error) return msg($("pwMsg"), error.message, "err");
   $("newPw").value = $("newPw2").value = ""; msg($("pwMsg"), "Пароль изменён ✓", "ok");
 };
@@ -579,7 +579,7 @@ $("exportBtn").onclick = () => {
 };
 $("logoutBtn").addEventListener("click", async () => {
   if (dirty && !confirm("Есть несохранённые изменения. Выйти без сохранения?")) return;
-  dirty = false; await supabase.auth.signOut(); location.reload();
+  dirty = false; await sb.auth.signOut(); location.reload();
 });
 
 $("loginBtn").onclick = () => msg($("loginMsg"), "Страница ещё не готова — обнови её (Ctrl+F5).", "err");
