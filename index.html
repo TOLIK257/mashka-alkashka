@@ -1,76 +1,225 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Машка-Алкашка 🥂</title>
-  <style>
-    :root {
-      --pink: #ff4d8d;
-      --deep: #1a1a2e;
-      --bg: #fff0f6;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--deep);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(255, 77, 141, 0.15);
-      max-width: 560px;
-      width: 100%;
-      padding: 48px 40px;
-      text-align: center;
-    }
-    .emoji { font-size: 72px; line-height: 1; margin-bottom: 16px; }
-    h1 {
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      margin-bottom: 12px;
-    }
-    h1 span { color: var(--pink); }
-    p.subtitle {
-      font-size: 16px;
-      color: #777;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-    .badge {
-      display: inline-block;
-      background: var(--pink);
-      color: #fff;
-      padding: 10px 22px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-    .footer {
-      margin-top: 40px;
-      font-size: 13px;
-      color: #aaa;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Маша — портфолио</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --card: #ffffff;
+    --accent: #0071e3;
+    --accent2: #5e5ce6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(245,245,247,0.72);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-inner {
+    max-width: 1000px; margin: 0 auto; padding: 0 22px;
+    height: 48px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav a { text-decoration: none; color: var(--text); font-size: 14px; }
+  .nav .logo { font-weight: 600; letter-spacing: -0.3px; }
+  .nav .links { display: flex; gap: 28px; }
+  .nav .links a { color: var(--muted); font-size: 13px; transition: color .2s; }
+  .nav .links a:hover { color: var(--text); }
+
+  .hero {
+    max-width: 1000px; margin: 0 auto; padding: 120px 22px 80px;
+    text-align: center;
+  }
+  .hero .eyebrow {
+    font-size: 15px; color: var(--accent); font-weight: 600; margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 8vw, 76px);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .hero .sub {
+    font-size: 21px; color: var(--muted); font-weight: 400;
+    max-width: 640px; margin: 0 auto;
+  }
+
+  .section { max-width: 1000px; margin: 0 auto; padding: 40px 22px; }
+  .section-title {
+    font-size: 30px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 20px;
+  }
+
+  .about-card {
+    background: var(--card); border-radius: 20px; padding: 36px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    font-size: 18px; color: #3a3a3c; white-space: pre-wrap;
+  }
+
+  .gallery {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .gallery-item {
+    background: var(--card); border-radius: 18px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s;
+    cursor: pointer;
+  }
+  .gallery-item:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+  .gallery-item img { width: 100%; height: 240px; object-fit: cover; display: block; }
+  .gallery-item .cap { padding: 14px 16px; font-size: 14px; color: var(--muted); }
+
+  .empty {
+    text-align: center; color: var(--muted); padding: 60px 0; font-size: 16px;
+  }
+
+  footer {
+    text-align: center; padding: 60px 22px 40px; color: var(--muted); font-size: 13px;
+  }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s, transform .6s; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200;
+    display: none; align-items: center; justify-content: center; padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #000; --text: #f5f5f7; --muted: #a1a1a6; --card: #1c1c1e; }
+    .nav { background: rgba(0,0,0,0.7); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .about-card { color: #e5e5e7; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+    .gallery-item { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+  }
+</style>
 </head>
 <body>
-  <div class="card">
-    <div class="emoji">🥂</div>
-    <h1>Привет! Это <span>Машка-Алкашка</span></h1>
-    <p class="subtitle">
-      Мой мини-сайтик . Скоро здесь появится что-то классное ✨
-    </p>
-    <span class="badge">Сайт в разработке</span>
-    <div class="footer">Сделано с любовью 💗</div>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo" id="navLogo">Маша</a>
+      <div class="links">
+        <a href="#about">Обо мне</a>
+        <a href="#gallery">Галерея</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow" id="heroEyebrow">Портфолио</div>
+    <h1 id="heroName">Привет, я <span class="grad">Маша</span></h1>
+    <p class="sub" id="heroSub"></p>
+  </header>
+
+  <section class="section" id="about">
+    <h2 class="section-title">Обо мне</h2>
+    <div class="about-card fade-in" id="aboutText"></div>
+  </section>
+
+  <section class="section" id="gallery">
+    <h2 class="section-title">Галерея</h2>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <footer>Сделано с любовью · <span id="footYear"></span></footer>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightboxImg" src="" alt="" />
   </div>
+
+<script>
+const SUPABASE_URL = "https://xxauwkymufehmoprmhay.supabase.co";
+const CONTENT_URL = SUPABASE_URL + "/storage/v1/object/public/portfolio/content.json";
+
+async function loadContent() {
+  try {
+    const r = await fetch(CONTENT_URL + "?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error("content " + r.status);
+    return await r.json();
+  } catch (e) {
+    return null;
+  }
+}
+
+function render(data) {
+  const s = data.site || {};
+  document.title = (s.name || "Маша") + " — портфолио";
+  document.getElementById("navLogo").textContent = s.name || "Маша";
+  document.getElementById("heroName").innerHTML = "Привет, я <span class=\"grad\">" + escapeHtml(s.name || "Маша") + "</span>";
+  document.getElementById("heroSub").textContent = s.subtitle || "";
+  document.getElementById("aboutText").textContent = s.about || "Здесь пока пусто. Добавь текст через админку!";
+
+  const g = document.getElementById("gallery");
+  const items = data.gallery || [];
+  if (!items.length) {
+    g.innerHTML = '<div class="empty">Фотографий пока нет 🌸</div>';
+  } else {
+    g.innerHTML = items.map(it =>
+      '<div class="gallery-item fade-in" data-src="' + escapeHtml(it.url || "") + '">' +
+        '<img src="' + escapeHtml(it.url || "") + '" alt="' + escapeHtml(it.caption || "") + '" loading="lazy" />' +
+        '<div class="cap">' + escapeHtml(it.caption || "") + '</div>' +
+      '</div>'
+    ).join("");
+  }
+
+  // lightbox
+  document.querySelectorAll(".gallery-item").forEach(el => {
+    el.addEventListener("click", () => {
+      const src = el.getAttribute("data-src");
+      if (!src) return;
+      document.getElementById("lightboxImg").src = src;
+      document.getElementById("lightbox").classList.add("open");
+    });
+  });
+}
+
+function escapeHtml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+// scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+
+function observeFades() {
+  document.querySelectorAll(".fade-in").forEach(el => io.observe(el));
+}
+
+document.getElementById("lightbox").addEventListener("click", () => {
+  document.getElementById("lightbox").classList.remove("open");
+});
+
+document.getElementById("footYear").textContent = new Date().getFullYear();
+
+loadContent().then(data => {
+  if (data) { render(data); observeFades(); }
+  else {
+    document.getElementById("aboutText").textContent = "Не удалось загрузить контент.";
+  }
+});
+</script>
 </body>
 </html>
