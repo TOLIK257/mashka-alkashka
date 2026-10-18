@@ -236,7 +236,7 @@ async function doSignup() {
   if (pw !== pw2) { msg($("loginMsg"), "Пароли не совпадают", "err"); return; }
   const { data, error } = await supabase.auth.signUp({ email: ADMIN_EMAIL, password: pw });
   if (error) { msg($("loginMsg"), error.message, "err"); return; }
-  // email-подтверждение отключено, сессия приходит сразу
+  // email-подтверждение отключено, сессия приходит сразу/
   if (!data.session) { msg($("loginMsg"), "Не удалось создать аккаунт. Обнови страницу и попробуй снова.", "err"); return; }
   session = data.session;
   await openEditor();
