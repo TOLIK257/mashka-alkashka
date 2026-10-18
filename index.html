@@ -41,13 +41,12 @@ button{font-family:var(--sans)}
 .nav{
   position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:100;
   width:min(680px,calc(100% - 20px));
-  display:flex;align-items:center;justify-content:space-between;
-  padding:6px 6px 6px 18px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  padding:6px;border-radius:999px;
   background:color-mix(in srgb,var(--bg) 72%,transparent);
   backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
   border:1px solid var(--line);box-shadow:var(--sh);
 }
-.nav-logo{font-family:var(--serif);font-weight:700;font-size:17px;letter-spacing:-.02em;white-space:nowrap}
 .nav-links{display:flex;gap:2px;overflow-x:auto;min-width:0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .nav-links::-webkit-scrollbar{display:none}
 .nav-links a{
@@ -226,7 +225,6 @@ footer{text-align:center;padding:48px 22px 40px;color:var(--muted);font-size:13p
   <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
 </div>
 <nav class="nav">
-  <a class="nav-logo" href="#/" id="navLogo"></a>
   <div class="nav-links" id="navLinks"></div>
 </nav>
 
@@ -314,7 +312,6 @@ function render(data){
   $("metaDesc").content=(D.seo&&D.seo.description)||s.subtitle||"";
 
   // nav
-  $("navLogo").textContent=name;
   const tabs=[["#/","Главная"]];
   const secOrder=D.navOrder||["about","gallery","contacts"];
   const secDef={about:{label:D.about&&D.about.title||"Обо мне",show:sec.about!==false},gallery:{label:D.galleryTitle||"Галерея",show:sec.gallery!==false},contacts:{label:D.contactTitle||"Контакты",show:sec.contacts!==false&&ctcs.length>0}};
