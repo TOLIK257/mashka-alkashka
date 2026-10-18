@@ -109,7 +109,7 @@
 <body>
 
   <!-- ===== Экран входа ===== -->
-  <div class="login" id="loginView" style="display:none;">
+  <div class="login" id="loginView" style="display:flex;">
     <div class="login-card">
       <h1 id="loginTitle">Вход</h1>
       <p class="sub" id="loginSub">Введи пароль, чтобы управлять сайтом</p>
@@ -196,6 +196,22 @@ let session = null;
 const $ = id => document.getElementById(id);
 
 function msg(el, text, cls) { el.textContent = text; el.className = "msg" + (cls ? " " + cls : ""); }
+
+// показываем любую фатальную ошибку прямо на экране (а не чёрную страницу)
+function showFatal(text) {
+  const lv = document.getElementById("loginView");
+  if (lv) lv.style.display = "flex";
+  const t = document.getElementById("loginTitle");
+  const s = document.getElementById("loginSub");
+  const b = document.getElementById("loginBtn");
+  if (t) t.textContent = "Ошибка";
+  if (s) s.textContent = text || "Что-то пошло не так";
+  if (b) b.style.display = "none";
+  const pwf = document.getElementById("pw");
+  if (pwf) pwf.parentElement.style.display = "none";
+}
+window.addEventListener("error", e => showFatal("JS: " + (e.message || "неизвестная ошибка")));
+window.addEventListener("unhandledrejection", e => showFatal("Promise: " + ((e.reason && e.reason.message) || e.reason || "ошибка")));
 
 async function fetchContent() {
   const r = await fetch(CONTENT_URL + "?t=" + Date.now(), { cache: "no-store" });
@@ -373,7 +389,10 @@ $("logoutBtn").addEventListener("click", async () => {
   location.reload();
 });
 
-initLogin();
+// дефолтный обработчик: если настоящий не подцепился — покажем ошибку, а не «молчание»
+$("loginBtn").onclick = () => msg($("loginMsg"), "Страница ещё не готова — обнови её (Ctrl+F5).", "err");
+
+initLogin().catch(e => showFatal("init: " + (e.message || e)));
 </script>
 </body>
 </html>
