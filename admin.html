@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Админка — Маша</title>
+<style>
+  :root {
+    --bg: #f5f5f7; --text: #1d1d1f; --muted: #6e6e73; --card: #ffffff;
+    --accent: #0071e3; --accent2: #5e5ce6; --border: rgba(0,0,0,0.08);
+    --ok: #28a745; --danger: #ff3b30;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+
+  /* ---------- экран входа ---------- */
+  .login { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .login-card {
+    background: var(--card); border-radius: 20px; padding: 40px 36px; width: 100%;
+    max-width: 400px; box-shadow: 0 8px 40px rgba(0,0,0,0.08); text-align: center;
+  }
+  .login-card h1 { font-size: 26px; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .login-card .sub { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
+  .field { text-align: left; margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field textarea {
+    width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
+    font-size: 15px; font-family: inherit; background: var(--bg); color: var(--text); outline: none;
+    transition: border .2s, box-shadow .2s;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,113,227,0.15); }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .btn {
+    display: inline-block; width: 100%; padding: 13px; border-radius: 12px; border: none;
+    background: var(--accent); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn:hover { opacity: 0.9; }
+  .btn:active { transform: scale(0.99); }
+  .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn.danger { background: var(--danger); }
+  .msg { font-size: 13px; margin-top: 14px; min-height: 18px; }
+  .msg.err { color: var(--danger); }
+  .msg.ok { color: var(--ok); }
+
+  /* ---------- экран редактора ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(245,245,247,0.8); border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    max-width: 720px; margin: 0 auto; padding: 0 22px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .topbar .brand { font-weight: 600; font-size: 15px; }
+  .topbar .actions { display: flex; gap: 10px; }
+  .topbar .btn { width: auto; padding: 8px 16px; font-size: 14px; }
+
+  .editor { padding: 32px 0 80px; }
+  .card {
+    background: var(--card); border-radius: 18px; padding: 26px; margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+  .card h2 { font-size: 20px; letter-spacing: -0.02em; margin-bottom: 18px; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: -10px; margin-bottom: 14px; }
+
+  /* галерея */
+  .gal-list { display: flex; flex-direction: column; gap: 12px; }
+  .gal-row {
+    display: flex; align-items: center; gap: 14px; padding: 10px; border-radius: 12px;
+    border: 1px solid var(--border); background: var(--bg);
+  }
+  .gal-row img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+  .gal-row .cap-input { flex: 1; }
+  .gal-row .cap-input input { width: 100%; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; font-family: inherit; background: var(--card); color: var(--text); outline: none; }
+  .gal-row .del { background: transparent; border: none; color: var(--danger); font-size: 14px; cursor: pointer; padding: 6px 8px; }
+  .add-photo { margin-top: 14px; }
+  .drop {
+    border: 2px dashed var(--border); border-radius: 14px; padding: 24px; text-align: center;
+    color: var(--muted); font-size: 14px; cursor: pointer; transition: border .2s, background .2s;
+  }
+  .drop:hover, .drop.over { border-color: var(--accent); background: rgba(0,113,227,0.04); }
+  .drop input { display: none; }
+  .up-progress { font-size: 13px; color: var(--accent); margin-top: 8px; display: none; }
+
+  .savebar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; }
+  .savebar-inner {
+    max-width: 720px; margin: 0 auto; padding: 14px 22px calc(14px + env(safe-area-inset-bottom));
+    display: flex; gap: 12px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #000; --text: #f5f5f7; --muted: #a1a1a6; --card: #1c1c1e; --border: rgba(255,255,255,0.12); }
+    .topbar { background: rgba(0,0,0,0.72); }
+    .gal-row { background: #151516; }
+    .gal-row .cap-input input { background: #2c2c2e; }
+    .field input, .field textarea { background: #151516; }
+    .card { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .login-card { box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ===== Экран входа ===== -->
+  <div class="login" id="loginView" style="display:none;">
+    <div class="login-card">
+      <h1 id="loginTitle">Вход</h1>
+      <p class="sub" id="loginSub">Введи пароль, чтобы управлять сайтом</p>
+      <div class="field">
+        <label>Пароль</label>
+        <input type="password" id="pw" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <div class="field" id="pw2wrap" style="display:none;">
+        <label>Повтори пароль</label>
+        <input type="password" id="pw2" placeholder="••••••••" autocomplete="new-password" />
+      </div>
+      <button class="btn" id="loginBtn">Продолжить</button>
+      <div class="msg" id="loginMsg"></div>
+    </div>
+  </div>
+
+  <!-- ===== Экран редактора ===== -->
+  <div id="editorView" style="display:none;">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <span class="brand">Админка · Маша</span>
+        <div class="actions">
+          <a class="btn ghost" href="./" target="_blank">Открыть сайт</a>
+          <button class="btn ghost" id="logoutBtn">Выйти</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor wrap">
+      <div class="card">
+        <h2>Текст</h2>
+        <div class="field"><label>Имя</label><input type="text" id="fName" /></div>
+        <div class="field"><label>Подзаголовок</label><input type="text" id="fSubtitle" /></div>
+        <div class="field"><label>Обо мне</label><textarea id="fAbout"></textarea></div>
+      </div>
+
+      <div class="card">
+        <h2>Галерея</h2>
+        <p class="hint">Перетащи фото сюда или нажми. Картинки сохраняются сразу после выбора.</p>
+        <div class="gal-list" id="galList"></div>
+        <div class="add-photo">
+          <div class="drop" id="drop">
+            <div>+ Добавить фото</div>
+            <input type="file" id="fileInput" accept="image/*" multiple />
+          </div>
+          <div class="up-progress" id="upProgress"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="savebar">
+      <div class="savebar-inner">
+        <button class="btn" id="saveBtn">Сохранить изменения</button>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://xxauwkymufehmoprmhay.supabase.co";
+const SUPABASE_PUB = "sb_publishable_ABzZaqdreTP8pe6L3fMFRA_kYo6J81W";
+const ADMIN_EMAIL = "sestra@mashka-alkashka.ru";
+const BUCKET = "portfolio";
+const CONTENT_PATH = "content.json";
+const CONTENT_URL = SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + CONTENT_PATH;
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUB);
+
+let editing = null;   // загруженный content.json
+let photos = [];      // [{url, caption}]
+let session = null;
+
+const $ = id => document.getElementById(id);
+
+function msg(el, text, cls) { el.textContent = text; el.className = "msg" + (cls ? " " + cls : ""); }
+
+async function fetchContent() {
+  const r = await fetch(CONTENT_URL + "?t=" + Date.now(), { cache: "no-store" });
+  if (!r.ok) throw new Error("content " + r.status);
+  return await r.json();
+}
+
+/* ---------------- вход ---------------- */
+async function initLogin() {
+  const { data } = await supabase.auth.getSession();
+  session = data.session;
+  if (session) { await openEditor(); return; }
+
+  // определяем режим: аккаунт ещё не создан?
+  let configured = false;
+  try {
+    const c = await fetchContent();
+    configured = !!(c && c.auth && c.auth.active);
+  } catch (e) { /* content ещё нет — значит первый запуск */ }
+
+  $("loginView").style.display = "flex";
+  if (configured) {
+    $("loginTitle").textContent = "Вход";
+    $("loginSub").textContent = "Введи пароль, чтобы управлять сайтом";
+    $("pw2wrap").style.display = "none";
+  } else {
+    $("loginTitle").textContent = "Первый запуск";
+    $("loginSub").textContent = "Придумай пароль — он защитит админку";
+    $("pw2wrap").style.display = "block";
+  }
+  $("loginBtn").textContent = configured ? "Войти" : "Создать пароль";
+  $("loginBtn").onclick = configured ? doLogin : doSignup;
+  $("pw").value = ""; $("pw2").value = ""; msg($("loginMsg"), "");
+  $("pw").focus();
+}
+
+async function doLogin() {
+  const pw = $("pw").value;
+  if (!pw) { msg($("loginMsg"), "Введи пароль", "err"); return; }
+  const { data, error } = await supabase.auth.signInWithPassword({ email: ADMIN_EMAIL, password: pw });
+  if (error) { msg($("loginMsg"), error.message === "Invalid login credentials" ? "Неверный пароль" : error.message, "err"); return; }
+  session = data.session;
+  await openEditor();
+}
+
+async function doSignup() {
+  const pw = $("pw").value, pw2 = $("pw2").value;
+  if (pw.length < 6) { msg($("loginMsg"), "Пароль должен быть не короче 6 символов", "err"); return; }
+  if (pw !== pw2) { msg($("loginMsg"), "Пароли не совпадают", "err"); return; }
+  const { data, error } = await supabase.auth.signUp({ email: ADMIN_EMAIL, password: pw });
+  if (error) { msg($("loginMsg"), error.message, "err"); return; }
+  // email-подтверждение отключено, сессия приходит сразу
+  if (!data.session) { msg($("loginMsg"), "Не удалось создать аккаунт. Обнови страницу и попробуй снова.", "err"); return; }
+  session = data.session;
+  await openEditor();
+}
+
+$("pw").addEventListener("keydown", e => { if (e.key === "Enter") $("loginBtn").click(); });
+$("pw2").addEventListener("keydown", e => { if (e.key === "Enter") $("loginBtn").click(); });
+
+/* ---------------- редактор ---------------- */
+async function openEditor() {
+  $("loginView").style.display = "none";
+  $("editorView").style.display = "block";
+
+  try { editing = await fetchContent(); }
+  catch (e) {
+    editing = { v: 1, auth: { active: true }, site: { name: "Маша", subtitle: "", about: "" }, gallery: [] };
+  }
+
+  const s = editing.site || {};
+  $("fName").value = s.name || "";
+  $("fSubtitle").value = s.subtitle || "";
+  $("fAbout").value = s.about || "";
+  photos = (editing.gallery || []).map(it => ({ url: it.url || "", caption: it.caption || "" }));
+  renderGallery();
+}
+
+function renderGallery() {
+  const list = $("galList");
+  if (!photos.length) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:14px;padding:6px 2px;">Фотографий пока нет — добавь первую!</div>';
+    return;
+  }
+  list.innerHTML = photos.map((p, i) =>
+    '<div class="gal-row">' +
+      '<img src="' + esc(p.url) + '" alt="" />' +
+      '<div class="cap-input"><input type="text" value="' + esc(p.caption) + '" placeholder="Подпись (необязательно)" data-i="' + i + '" /></div>' +
+      '<button class="del" data-i="' + i + '" title="Удалить">✕</button>' +
+    '</div>'
+  ).join("");
+
+  list.querySelectorAll(".cap-input input").forEach(inp => {
+    inp.addEventListener("change", () => { photos[+inp.dataset.i].caption = inp.value; });
+  });
+  list.querySelectorAll(".del").forEach(btn => {
+    btn.addEventListener("click", () => {
+      photos.splice(+btn.dataset.i, 1);
+      renderGallery();
+    });
+  });
+}
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+/* ---------------- загрузка фото ---------------- */
+const drop = $("drop"), fileInput = $("fileInput");
+drop.addEventListener("click", () => fileInput.click());
+["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => {
+  const files = e.dataTransfer.files;
+  if (files && files.length) uploadFiles(files);
+});
+fileInput.addEventListener("change", () => {
+  if (fileInput.files.length) uploadFiles(fileInput.files);
+  fileInput.value = "";
+});
+
+async function uploadFiles(files) {
+  const list = Array.from(files);
+  $("upProgress").style.display = "block";
+  for (let i = 0; i < list.length; i++) {
+    const f = list[i];
+    if (!f.type.startsWith("image/")) continue;
+    $("upProgress").textContent = "Загружаю " + (i+1) + "/" + list.length + "…";
+    const ext = (f.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const path = "photos/" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + "." + ext;
+    const { error } = await supabase.storage.from(BUCKET).upload(path, f, { upsert: false });
+    if (error) { $("upProgress").textContent = "Ошибка загрузки: " + error.message; continue; }
+    photos.push({ url: SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + path, caption: "" });
+    renderGallery();
+  }
+  $("upProgress").style.display = "none";
+  $("upProgress").textContent = "";
+}
+
+/* ---------------- сохранение ---------------- */
+async function doSave() {
+  const btn = $("saveBtn");
+  btn.disabled = true; btn.textContent = "Сохраняю…";
+  try {
+    const payload = {
+      v: 1,
+      auth: { active: true },
+      site: { name: $("fName").value.trim(), subtitle: $("fSubtitle").value.trim(), about: $("fAbout").value },
+      gallery: photos
+    };
+    const json = JSON.stringify(payload, null, 2);
+    const { error } = await supabase.storage.from(BUCKET).upload(
+      CONTENT_PATH,
+      new Blob([json], { type: "application/json" }),
+      { upsert: true, contentType: "application/json" }
+    );
+    if (error) throw error;
+    editing = payload;
+    btn.textContent = "✓ Сохранено!";
+    setTimeout(() => { btn.textContent = "Сохранить изменения"; }, 1600);
+  } catch (e) {
+    btn.textContent = "Ошибка — попробуй ещё раз";
+    alert("Не удалось сохранить: " + (e.message || e));
+  } finally {
+    btn.disabled = false;
+  }
+}
+$("saveBtn").addEventListener("click", doSave);
+
+$("logoutBtn").addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  session = null;
+  location.reload();
+});
+
+initLogin();
+</script>
+</body>
+</html>
